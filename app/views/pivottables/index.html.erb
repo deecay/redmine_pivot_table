@@ -29,7 +29,7 @@ $(document).ready(function(){
 
 %> { <% @query.available_columns.each_with_index do |column, j| -%><%
 
- %><%= column.caption == "#" ? "ID" : column.caption -%>:<% if (text = (column.name == :done_ratio) ? column.value_object(issue).to_s : column_content(column, issue)) -%>'<%=raw escape_javascript(text.split("\n")[0]) -%>'<% end -%><% if (j < @query.available_columns.size - 1) -%>,<% end -%><% end -%><%
+ %>"<%= column.caption == "#" ? "ID" : column.caption -%>":<% if (text = (column.name == :done_ratio) ? column.value_object(issue).to_s : column_content(column, issue)) -%>'<%=raw escape_javascript(text.split("\n")[0]) -%>'<% end -%><% if (j < @query.available_columns.size - 1) -%>,<% end -%><% end -%><%
 
 %> } <% if (i < @issues.size - 1) -%>,<% end -%><% end -%>
 
