@@ -1,0 +1,74 @@
+<h2><%= l(:header) %></h2>
+
+<% content_for :header_tags do %>
+    <%= stylesheet_link_tag 'pivot', :plugin => 'redmine_pivot_table' %>
+    <%= stylesheet_link_tag 'c3.min.css', :plugin => 'redmine_pivot_table' %>
+    <%= javascript_include_tag 'jquery-1.8.3.min.js', :plugin => 'redmine_pivot_table' %>
+    <%= javascript_include_tag 'jquery-ui-1.9.2.custom.min.js', :plugin => 'redmine_pivot_table' %>
+    <%= javascript_include_tag 'pivot.js', :plugin => 'redmine_pivot_table' %>
+    <!-- <%= javascript_include_tag 'pivot.ja.js', :plugin => 'redmine_pivot_table' %>-->
+    <%= javascript_include_tag 'd3.min.js', :plugin => 'redmine_pivot_table' %>
+    <%= javascript_include_tag 'c3.min.js', :plugin => 'redmine_pivot_table' %>
+    <%= javascript_include_tag 'c3_renderers.js', :plugin => 'redmine_pivot_table' %>
+<% end %>
+
+<style>
+ .c3 text {font-family:Verdana, sans-serif;}
+ .c3 text {font-size: 12px;}
+ .c3-line {stroke-width: 3px;}
+</style>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+           var sortAs = $.pivotUtilities.sortAs;
+
+           data = 
+[<% @issues.each_with_index do |issue, i| -%><%
+
+%> { <% @query.available_columns.each_with_index do |column, j| -%><%
+
+ %><%= column.caption == "#" ? "ID" : column.caption -%>:<% if (text = (column.name == :done_ratio) ? column.value_object(issue).to_s : column_content(column, issue)) -%>'<%=raw escape_javascript(text.split("\n")[0]) -%>'<% end -%><% if (j < @query.available_columns.size - 1) -%>,<% end -%><% end -%><%
+
+%> } <% if (i < @issues.size - 1) -%>,<% end -%><% end -%>
+
+];
+           console.log(data);
+
+           var dateFormat = $.pivotUtilities.derivers.dateFormat;
+
+           var renderers = $.extend($.pivotUtilities.renderers, 
+                    $.pivotUtilities.c3_renderers);
+
+           $("#output").pivotUI(data, {
+
+              renderers: renderers,
+
+              sorters: function(attr) {
+                  if(attr === "<%= to_caption(@query, :status) -%>") {
+                      return sortAs(["<%= raw @statuses.join('", "') %>"]);
+                  }
+              },
+
+              unusedAttrsVertical: false,
+
+              rows: ["<%= to_caption(@query, :fixed_version) -%>", "<%= to_caption(@query, :assigned_to) -%>"],
+              cols: ["<%= to_caption(@query, :done_ratio) -%>"]
+            
+           }, false, "en");
+
+　　$("#output").click(function(e){
+        if (e.target.href ) {
+            window.open(e.target,'_blank');
+　　　　　　return false;
+　　　　};
+    });
+});
+</script>
+<%= form_tag({:controller => 'pivottables', :action => 'index', :project_id => @project } , :method => :get, :id => 'query_form' ) do %>
+<%= check_box_tag('closed', 1, params[:closed], :onclick=>"submit();") %> <%= l(:include_closed) %>
+<%= hidden_field_tag("action", "submit") %>
+<% end %>
+
+<div id="output"></div>
