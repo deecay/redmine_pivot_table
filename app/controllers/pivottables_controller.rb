@@ -20,6 +20,11 @@ class PivottablesController < ApplicationController
     retrieve_query
     @query.project = @project
 
+    # Exclude description
+    index = nil
+    @query.available_columns.each_with_index {|column, i| index = i if column.name == :description}
+    @query.available_columns.delete_at(index)
+
     if (params[:closed] == "1")
         @query.add_filter("status_id", "*", [''])
     else

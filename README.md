@@ -10,6 +10,9 @@ It uses [PivotTable.js](http://nicolas.kruchten.com/pivottable/examples/) as a u
 With this plugin you can:
 * Analyze issues using pivot tables
 
+Requieres IE8 and above.
+PivotTable.js version included: 2015-04-11
+
 
 ## Installation
 

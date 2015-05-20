@@ -20,6 +20,9 @@
 
 
 <script type="text/javascript">
+
+<%  @query.available_columns[0] = QueryColumn.new(:id, :sortable => @query.available_columns[0].sortable, :default_order => @query.available_columns[0].default_order, :caption => "ID", :frozen => true) %>
+
 $(document).ready(function(){
 
            var sortAs = $.pivotUtilities.sortAs;
@@ -29,12 +32,11 @@ $(document).ready(function(){
 
 %> { <% @query.available_columns.each_with_index do |column, j| -%><%
 
- %>"<%= column.caption == "#" ? "ID" : column.caption -%>":<% if (text = (column.name == :done_ratio) ? column.value_object(issue).to_s : column_content(column, issue)) -%>'<%=raw escape_javascript(text.split("\n")[0]) -%>'<% end -%><% if (j < @query.available_columns.size - 1) -%>,<% end -%><% end -%><%
+ %>"<%= column.caption -%>":<% if (text = (column.name == :done_ratio) ? column.value_object(issue).to_s : column_content(column, issue)) -%>'<%=raw escape_javascript(text.split("\n")[0]) -%>'<% end -%><% if (j < @query.available_columns.size - 1) -%>,<% end -%><% end -%><%
 
 %> } <% if (i < @issues.size - 1) -%>,<% end -%><% end -%>
 
 ];
-           console.log(data);
 
            var dateFormat = $.pivotUtilities.derivers.dateFormat;
 
@@ -54,7 +56,7 @@ $(document).ready(function(){
               unusedAttrsVertical: false,
 
               rows: ["<%= to_caption(@query, :fixed_version) -%>", "<%= to_caption(@query, :assigned_to) -%>"],
-              cols: ["<%= to_caption(@query, :done_ratio) -%>"]
+              cols: ["<%= to_caption(@query, :status) -%>"]
             
            }, false, "en");
 
