@@ -34,11 +34,7 @@ For more information on usage, visit [PivotTable.js Home page](http://nicolas.kr
 
 ## Todo
 
-* Make renderers and aggregators GET parameters.
-
 * i18n of renderers and aggregators.
-
-* Performance improvement.
 
 
 ## Keywords

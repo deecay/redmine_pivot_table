@@ -53,11 +53,12 @@ $(document).ready(function(){
                   }
               },
 
-              unusedAttrsVertical: false,
-
-              rows: ["<%= to_caption(@query, :fixed_version) -%>", "<%= to_caption(@query, :assigned_to) -%>"],
-              cols: ["<%= to_caption(@query, :status) -%>"]
-            
+              <%= raw %|rendererName: "#{@rendererName}",| if @rendererName %>
+              <%= raw %|aggregatorName: "#{@aggregatorName}",| if @aggregatorName %>
+              <%= raw %|vals: ["#{@vals.join('","')}"],| if @vals %>
+              <%= raw @rows == nil ? %|rows: ["#{to_caption(@query, :fixed_version)}", "#{to_caption(@query, :assigned_to)}"],| : %|rows: ["#{@rows.join('","')}"],| %>
+              <%= raw @cols == nil ? %|cols: ["#{to_caption(@query, :status)}"],| : %|cols: ["#{@cols.join('","')}"],| %>
+              unusedAttrsVertical: false
            }, false, "en");
 
 　　$("#output").click(function(e){

@@ -31,11 +31,16 @@ class PivottablesController < ApplicationController
         @query.add_filter("status_id", "o", [''])
     end
 
+    @rows = params[:rows] ? params[:rows].split(",") : nil
+    @cols = params[:cols] ? params[:cols].split(",") : nil
+    @aggregatorName = params[:aggregatorName]
+    @vals = params[:vals] ? params[:vals].split(",") : nil
+    @rendererName = params[:rendererName]
+
     @issues = @query.issues(:include => [:assigned_to, :tracker, :priority, :category, :fixed_version],
                               :offset => 0,
                               :limit => 1000)
 
-    @issues_json = @issues.to_json
   end
 
 end
