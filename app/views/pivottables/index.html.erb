@@ -48,7 +48,7 @@ $(document).ready(function(){
               renderers: renderers,
 
               sorters: function(attr) {
-                  if(attr === "<%= to_caption(@query, :status) -%>") {
+                  if(attr === "<%= pv_caption(:status) -%>") {
                       return sortAs(["<%= raw @statuses.join('", "') %>"]);
                   }
               },
@@ -56,8 +56,8 @@ $(document).ready(function(){
               <%= raw %|rendererName: "#{@rendererName}",| if @rendererName %>
               <%= raw %|aggregatorName: "#{@aggregatorName}",| if @aggregatorName %>
               <%= raw %|vals: ["#{@vals.join('","')}"],| if @vals %>
-              <%= raw @rows == nil ? %|rows: ["#{to_caption(@query, :fixed_version)}", "#{to_caption(@query, :assigned_to)}"],| : %|rows: ["#{@rows.join('","')}"],| %>
-              <%= raw @cols == nil ? %|cols: ["#{to_caption(@query, :status)}"],| : %|cols: ["#{@cols.join('","')}"],| %>
+              <%= raw @rows == nil ? %|rows: ["#{pv_caption(:fixed_version)}", "#{pv_caption(:assigned_to)}"],| : %|rows: ["#{@rows.join('","')}"],| %>
+              <%= raw @cols == nil ? %|cols: ["#{pv_caption(:status)}"],| : %|cols: ["#{@cols.join('","')}"],| %>
               unusedAttrsVertical: false
            }, false, "en");
 
