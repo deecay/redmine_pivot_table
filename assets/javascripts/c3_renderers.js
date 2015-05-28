@@ -18,11 +18,19 @@
         chartOpts = {};
       }
       return function(pivotData, opts) {
-        var agg, colKey, colKeys, columns, dataArray, datum, defaults, fullAggName, h, hAxisTitle, headers, params, renderArea, result, row, rowHeader, rowKey, rowKeys, tree2, vAxisTitle, x, y, _i, _j, _len, _len1, _ref;
+        var agg, colKey, colKeys, columns, dataArray, datum, defaults, fullAggName, h, hAxisTitle, headers, i, j, len, len1, params, ref, renderArea, result, row, rowHeader, rowKey, rowKeys, tree2, vAxisTitle, val, x, y;
         defaults = {
           localeStrings: {
             vs: "vs",
             by: "by"
+          },
+          c3: {
+            width: function() {
+              return window.innerWidth / 1.4;
+            },
+            height: function() {
+              return window.innerHeight / 1.4;
+            }
           }
         };
         opts = $.extend(defaults, opts);
@@ -38,13 +46,13 @@
           colKeys.push([]);
         }
         headers = (function() {
-          var _i, _len, _results;
-          _results = [];
-          for (_i = 0, _len = colKeys.length; _i < _len; _i++) {
-            h = colKeys[_i];
-            _results.push(h.join("-"));
+          var i, len, results;
+          results = [];
+          for (i = 0, len = colKeys.length; i < len; i++) {
+            h = colKeys[i];
+            results.push(h.join("-"));
           }
-          return _results;
+          return results;
         })();
         fullAggName = pivotData.aggregatorName;
         if (pivotData.valAttrs.length) {
@@ -54,9 +62,9 @@
           dataArray = [];
           hAxisTitle = pivotData.colAttrs.join("-");
           vAxisTitle = pivotData.rowAttrs.join("-");
-          _ref = pivotData.tree;
-          for (y in _ref) {
-            tree2 = _ref[y];
+          ref = pivotData.tree;
+          for (y in ref) {
+            tree2 = ref[y];
             for (x in tree2) {
               agg = tree2[x];
               datum = {};
@@ -68,15 +76,24 @@
           }
         } else {
           columns = [];
-          for (_i = 0, _len = rowKeys.length; _i < _len; _i++) {
-            rowKey = rowKeys[_i];
-            rowHeader = rowKey.join("-").replace(/(<([^>]+)>)/ig,"");
+          for (i = 0, len = rowKeys.length; i < len; i++) {
+            rowKey = rowKeys[i];
+            rowHeader = rowKey.join("-");
             row = [rowHeader === "" ? pivotData.aggregatorName : rowHeader];
-            for (_j = 0, _len1 = colKeys.length; _j < _len1; _j++) {
-              colKey = colKeys[_j];
+            for (j = 0, len1 = colKeys.length; j < len1; j++) {
+              colKey = colKeys[j];
               agg = pivotData.getAggregator(rowKey, colKey);
               if (agg.value() != null) {
-                row.push(agg.value());
+                val = agg.value();
+                if ($.isNumeric(val)) {
+                  if (val < 1) {
+                    row.push(parseFloat(val.toPrecision(3)));
+                  } else {
+                    row.push(parseFloat(val.toFixed(3)));
+                  }
+                } else {
+                  row.push(val);
+                }
               } else {
                 row.push(null);
               }
@@ -88,8 +105,8 @@
         }
         params = {
           size: {
-            height: $(window).height() / 1.4,
-            width: $(window).width() / 1.4
+            height: opts.c3.height(),
+            width: opts.c3.width()
           },
           axis: {
             y: {
@@ -137,13 +154,13 @@
         if (chartOpts.stacked != null) {
           params.data.groups = [
             (function() {
-              var _k, _len2, _results;
-              _results = [];
-              for (_k = 0, _len2 = rowKeys.length; _k < _len2; _k++) {
-                x = rowKeys[_k];
-                _results.push(x.join("-"));
+              var k, len2, results;
+              results = [];
+              for (k = 0, len2 = rowKeys.length; k < len2; k++) {
+                x = rowKeys[k];
+                results.push(x.join("-"));
               }
-              return _results;
+              return results;
             })()
           ];
         }

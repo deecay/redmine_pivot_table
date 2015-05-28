@@ -1,16 +1,15 @@
+.pvtUi { color: #333; }
+
 
 table.pvtTable {
-/*    font-family:arial;
-    font-size: 8pt; */
-    font-family:Verdana, sans-serif;
-    font-size: 12px;
+    font-size: 8pt;
     text-align: left;
     border-collapse: collapse;
 }
 table.pvtTable tr th, table.pvtTable tr th {
     background-color: #e6EEEE;
     border: 1px solid #CDCDCD;
-    font-size: 9pt;
+    font-size: 8pt;
     padding: 5px;
 }
 
@@ -52,7 +51,7 @@ table.pvtTable tr td {
 }
 
 .pvtAxisContainer li span.pvtAttr {
-    background: #EEF5EE;
+    background: #F3F3F3;
     border: 1px solid #DEDEDE;
     padding: 2px 5px;
     white-space:nowrap;
@@ -82,6 +81,9 @@ table.pvtTable tr td {
 }
 
 .pvtFilterBox h4{ margin:0; }
+.pvtFilterBox p { margin: 1em auto; }
+.pvtFilterBox label { font-weight: normal; }
+.pvtFilterBox input[type='checkbox'] { margin-right: 5px; }
 
 .pvtCheckContainer{
     text-align: left;
@@ -91,5 +93,4 @@ table.pvtTable tr td {
 }
 .pvtCheckContainer p{ margin: 5px; }
 
-.pvtUnused { line-height: 2em; }
-
+.pvtRendererArea { padding: 5px;}
