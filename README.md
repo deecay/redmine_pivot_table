@@ -10,8 +10,10 @@ It uses [PivotTable.js](http://nicolas.kruchten.com/pivottable/examples/) as a u
 With this plugin you can:
 * Analyze issues using pivot tables
 
+![Image](https://raw.github.com/wiki/deecay/redmine_pivot_table/images/table_simple.jpg)
+
 Requieres IE8 and above.
-PivotTable.js version included: 2015-04-11
+PivotTable.js version included: 2015-05-28
 
 
 ## Installation
@@ -30,6 +32,15 @@ No migration required.
 Drag and drop fields 
 
 For more information on usage, visit [PivotTable.js Home page](http://nicolas.kruchten.com/pivottable/examples/).
+
+## Other screenshots
+
+![Image](https://raw.github.com/wiki/deecay/redmine_pivot_table/images/heatmap.jpg)
+
+![Image](https://raw.github.com/wiki/deecay/redmine_pivot_table/images/line.jpg)
+
+![Image](https://raw.github.com/wiki/deecay/redmine_pivot_table/images/bar.jpg)
+
 
 
 ## Todo
