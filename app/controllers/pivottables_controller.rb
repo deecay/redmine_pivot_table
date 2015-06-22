@@ -15,6 +15,7 @@ class PivottablesController < ApplicationController
   def index
     @project = Project.find(params[:project_id])
     @language = current_language
+    @language_js = "pivot." + current_language.to_s + ".js"
     @statuses = IssueStatus.sorted.collect{|s| [s.name] }
 
     retrieve_query

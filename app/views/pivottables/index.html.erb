@@ -6,8 +6,7 @@
     <%= javascript_include_tag 'jquery-1.8.3.min.js', :plugin => 'redmine_pivot_table' %>
     <%= javascript_include_tag 'jquery-ui-1.9.2.custom.min.js', :plugin => 'redmine_pivot_table' %>
     <%= javascript_include_tag 'pivot.js', :plugin => 'redmine_pivot_table' %>
-    <%= javascript_include_tag 'pivot.ja.js', :plugin => 'redmine_pivot_table' %>
-    <%= javascript_include_tag 'pivot.fr.js', :plugin => 'redmine_pivot_table' %>
+    <%= javascript_include_tag @language_js, :plugin => 'redmine_pivot_table' %>
     <%= javascript_include_tag 'd3.min.js', :plugin => 'redmine_pivot_table' %>
     <%= javascript_include_tag 'c3.min.js', :plugin => 'redmine_pivot_table' %>
     <%= javascript_include_tag 'c3_renderers.js', :plugin => 'redmine_pivot_table' %>
