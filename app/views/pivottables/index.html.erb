@@ -74,10 +74,26 @@ $(document).ready(function(){
 　　　　};
     });
 });
+
+function clear_attr(){
+   $("#output").pivotUI(
+                         data,
+                         {
+                           renderers: $.pivotUtilities.renderers,
+                           sorters: $.pivotUtilities.sorters,
+                           rows: [],
+                           cols: [],
+                           unusedAttrsVertical: false
+                         },
+                         true,
+                         "<%= @language %>");
+}
 </script>
 <%= form_tag({:controller => 'pivottables', :action => 'index', :project_id => @project } , :method => :get, :id => 'query_form' ) do %>
 <%= check_box_tag('closed', 1, params[:closed], :onclick=>"submit();") %> <%= l(:include_closed) %>
 <%= hidden_field_tag("action", "submit") %>
 <% end %>
+
+<img title="Clear all attributes" src="/redmine/images/close.png" alt="Clear all attributes" style="float: right; cursor: pointer;" onclick="clear_attr();"></img>
 
 <div id="output"></div>
