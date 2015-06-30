@@ -76,10 +76,13 @@ $(document).ready(function(){
 });
 
 function clear_attr(){
-   $("#output").pivotUI(
+  var ext_renderers = $.pivotUtilities.locales["<%= @language %>"].c3_renderers || $.pivotUtilities.c3_renderers;
+  var renderers = $.extend($.pivotUtilities.locales["<%= @language %>"].renderers, ext_renderers);
+  
+  $("#output").pivotUI(
                          data,
                          {
-                           renderers: $.pivotUtilities.renderers,
+                           renderers: renderers,
                            sorters: $.pivotUtilities.sorters,
                            rows: [],
                            cols: [],
