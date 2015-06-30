@@ -69,6 +69,13 @@
         "ヒートマップ": $.pivotUtilities.renderers["Heatmap"],
         "行ヒートマップ": $.pivotUtilities.renderers["Row Heatmap"],
         "列ヒートマップ": $.pivotUtilities.renderers["Col Heatmap"]
+      },
+      c3_renderers: {
+        "折れ線グラフ": $.pivotUtilities.c3_renderers["Line Chart"],
+        "棒グラフ": $.pivotUtilities.c3_renderers["Bar Chart"],
+        "積み上げ棒グラフ": $.pivotUtilities.c3_renderers["Stacked Bar Chart"],
+        "面グラフ": $.pivotUtilities.c3_renderers["Area Chart"],
+        "散布図": $.pivotUtilities.c3_renderers["Scatter Chart"]
       }
     };
   });
