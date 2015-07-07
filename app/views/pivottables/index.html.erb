@@ -46,7 +46,20 @@ $(document).ready(function(){
 
            var dateFormat = $.pivotUtilities.derivers.dateFormat;
 
-           var ext_renderers = $.pivotUtilities.locales["<%= @language %>"].c3_renderers || $.pivotUtilities.c3_renderers;
+           var c3_renderers = $.pivotUtilities.locales["<%= @language %>"].c3_renderers || $.pivotUtilities.c3_renderers;
+           var ext_renderers = {};
+
+           // strip html tags for C3 renderers
+           for (var rd in c3_renderers) {
+               ext_renderers[rd] = function (d, o) {
+                   d.rowKeys = JSON.parse(JSON.stringify(d.rowKeys).replace(/(<([^>]+)>)/ig,""));
+                   for (var pname in d.tree) {
+                       d.tree[pname.replace(/(<([^>]+)>)/ig,"")] = d.tree[pname];
+                   }
+                   return c3_renderers[$(".pvtRenderer")[0].value](d, o);
+               }
+           };
+
            var renderers = $.extend($.pivotUtilities.locales["<%= @language %>"].renderers, ext_renderers);
 
            $("#output").pivotUI(data, {
