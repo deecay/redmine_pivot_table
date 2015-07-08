@@ -29,6 +29,8 @@
 
 <%  @query.available_columns[0] = QueryColumn.new(:id, :sortable => @query.available_columns[0].sortable, :default_order => @query.available_columns[0].default_order, :caption => "ID", :frozen => true) %>
 
+var renderers;
+
 $(document).ready(function(){
 
            var sortAs = $.pivotUtilities.sortAs;
@@ -60,7 +62,7 @@ $(document).ready(function(){
                }
            };
 
-           var renderers = $.extend($.pivotUtilities.locales["<%= @language %>"].renderers, ext_renderers);
+           renderers = $.extend($.pivotUtilities.locales["<%= @language %>"].renderers, ext_renderers);
 
            $("#output").pivotUI(data, {
 
@@ -89,8 +91,6 @@ $(document).ready(function(){
 });
 
 function clear_attr(){
-  var ext_renderers = $.pivotUtilities.locales["<%= @language %>"].c3_renderers || $.pivotUtilities.c3_renderers;
-  var renderers = $.extend($.pivotUtilities.locales["<%= @language %>"].renderers, ext_renderers);
   
   $("#output").pivotUI(
                          data,
