@@ -55,8 +55,30 @@ $(document).ready(function(){
            for (var rd in c3_renderers) {
                ext_renderers[rd] = function (d, o) {
                    d.rowKeys = JSON.parse(JSON.stringify(d.rowKeys).replace(/(<([^>]+)>)/ig,""));
-                   for (var pname in d.tree) {
-                       d.tree[pname.replace(/(<([^>]+)>)/ig,"")] = d.tree[pname];
+                   d.colKeys = JSON.parse(JSON.stringify(d.colKeys).replace(/(<([^>]+)>)/ig,""));
+                   for (var k in d.rowTotals) {
+                       if (d.rowTotals.hasOwnProperty(k) && /(<([^>]+)>)/.test(k)) {
+                           d.rowTotals[k.replace(/(<([^>]+)>)/ig,"")] = d.rowTotals[k];
+                           delete d.rowTotals[k];
+                       }
+                   }
+                   for (var k in d.colTotals) {
+                       if (d.colTotals.hasOwnProperty(k) && /(<([^>]+)>)/.test(k)) {
+                           d.colTotals[k.replace(/(<([^>]+)>)/ig,"")] = d.colTotals[k];
+                           delete d.colTotals[k];
+                       }
+                   }
+                   for (var r in d.tree) {
+                       if (d.tree.hasOwnProperty(r) && /(<([^>]+)>)/.test(r) ) {
+                           for (var c in d.tree[r]) {
+                               if ( d.tree[r].hasOwnProperty(c) && /(<([^>]+)>)/.test(c) ) {
+                                   d.tree[r][c.replace(/(<([^>]+)>)/ig,"")] = d.tree[r][c];
+                                   delete d.tree[r][c];
+                               }
+                           }
+                           d.tree[r.replace(/(<([^>]+)>)/ig,"")] = d.tree[r];
+                           delete d.tree[r];
+                       }
                    }
                    return c3_renderers[$(".pvtRenderer")[0].value](d, o);
                }
