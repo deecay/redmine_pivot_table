@@ -95,7 +95,13 @@ $(document).ready(function(){
                       return sortAs(["<%= raw @statuses.join('", "') %>"]);
                   }
               },
-
+              onRefresh: function(config) {
+                  var config_copy = JSON.parse(JSON.stringify(config));
+                  $("#url").val("<%= request.original_url.split("?")[0] -%>" + "?" +
+                                  "action=submit&" +
+                                  "rows=" + encodeURI(config_copy["rows"]) + "&" +
+                                  "cols=" + encodeURI(config_copy["cols"]) );
+              },
               <%= raw %|rendererName: "#{@rendererName}",| if @rendererName %>
               <%= raw %|aggregatorName: "#{@aggregatorName}",| if @aggregatorName %>
               <%= raw %|vals: ["#{@vals.join('","')}"],| if @vals %>
@@ -135,3 +141,5 @@ function clear_attr(){
 <img title="Clear all attributes" src="/redmine/images/close.png" alt="Clear all attributes" style="float: right; cursor: pointer;" onclick="clear_attr();">
 
 <div id="output"></div>
+
+<a href="#" onclick="$(&#x27;#url&#x27;).toggle();; return false;" style="font-size: 9px;">Show URL</a><input type="text" id="url" style="font-size: 11px; color: #767676; border: 1px solid #ccc; margin: 0px 2px 0px 2px; display: none;" readonly>
