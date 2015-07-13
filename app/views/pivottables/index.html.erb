@@ -134,7 +134,7 @@ function clear_attr(){
 }
 </script>
 <%= form_tag({:controller => 'pivottables', :action => 'index', :project_id => @project } , :method => :get, :id => 'query_form' ) do %>
-<%= check_box_tag('closed', 1, params[:closed], :onclick=>"submit();") %> <%= l(:include_closed) %>
+<%= check_box_tag('closed', 1, params[:closed] == '1', :onclick=>"submit();") %> <%= l(:include_closed) %>
 <%= hidden_field_tag("action", "submit") %>
 <% end %>
 
