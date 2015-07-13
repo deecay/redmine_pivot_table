@@ -97,10 +97,14 @@ $(document).ready(function(){
               },
               onRefresh: function(config) {
                   var config_copy = JSON.parse(JSON.stringify(config));
+                  var closed_check_value = $("#closed")[0].checked ? "1" : "0";
                   $("#url").val("<%= request.original_url.split("?")[0] -%>" + "?" +
                                   "action=submit&" +
                                   "rows=" + encodeURI(config_copy["rows"]) + "&" +
-                                  "cols=" + encodeURI(config_copy["cols"]) );
+                                  "cols=" + encodeURI(config_copy["cols"]) + "&" +
+                                  "rendererName=" + encodeURI(config_copy["rendererName"]) + "&" +
+                                  "aggregatorName=" + encodeURI(config_copy["aggregatorName"]) + "&" +
+                                  "closed=" + closed_check_value );
               },
               <%= raw %|rendererName: "#{@rendererName}",| if @rendererName %>
               <%= raw %|aggregatorName: "#{@aggregatorName}",| if @aggregatorName %>
