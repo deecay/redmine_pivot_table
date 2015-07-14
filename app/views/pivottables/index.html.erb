@@ -95,17 +95,7 @@ $(document).ready(function(){
                       return sortAs(["<%= raw @statuses.join('", "') %>"]);
                   }
               },
-              onRefresh: function(config) {
-                  var config_copy = JSON.parse(JSON.stringify(config));
-                  var closed_check_value = $("#closed")[0].checked ? "1" : "0";
-                  $("#url").val("<%= request.original_url.split("?")[0] -%>" + "?" +
-                                  "action=submit&" +
-                                  "rows=" + encodeURI(config_copy["rows"]) + "&" +
-                                  "cols=" + encodeURI(config_copy["cols"]) + "&" +
-                                  "rendererName=" + encodeURI(config_copy["rendererName"]) + "&" +
-                                  "aggregatorName=" + encodeURI(config_copy["aggregatorName"]) + "&" +
-                                  "closed=" + closed_check_value );
-              },
+              onRefresh: update_url,
               <%= raw %|rendererName: "#{@rendererName}",| if @rendererName %>
               <%= raw %|aggregatorName: "#{@aggregatorName}",| if @aggregatorName %>
               <%= raw %|vals: ["#{@vals.join('","')}"],| if @vals %>
@@ -129,12 +119,24 @@ function clear_attr(){
                          {
                            renderers: renderers,
                            sorters: $.pivotUtilities.sorters,
+                           onRefresh: update_url,
                            rows: [],
                            cols: [],
                            unusedAttrsVertical: false
                          },
                          true,
                          "<%= @language %>");
+}
+function update_url(config){
+    var config_copy = JSON.parse(JSON.stringify(config));
+    var check_value = $("#closed")[0].checked ? "1" : "0";
+    $("#url").val("<%= request.original_url.split("?")[0] -%>" + "?" +
+                  "action=submit&" +
+                  "rows=" + encodeURI(config_copy["rows"]) + "&" +
+                  "cols=" + encodeURI(config_copy["cols"]) + "&" +
+                  "rendererName=" + encodeURI(config_copy["rendererName"]) + "&" +
+                  "aggregatorName=" + encodeURI(config_copy["aggregatorName"]) + "&" +
+                  "closed=" + check_value );
 }
 </script>
 <%= form_tag({:controller => 'pivottables', :action => 'index', :project_id => @project } , :method => :get, :id => 'query_form' ) do %>
