@@ -3,7 +3,7 @@ Redmine::Plugin.register :redmine_pivot_table do
   author 'Daiju Kito'
   description 'Pivot table plugin for Redmine using pivottable.js'
   version '0.0.2'
-  url 'http://example.com/path/to/plugin'
+  url 'https://github.com/deecay/redmine_pivot_table'
 
   project_module :pivottables do
     permission :pivottables, {:pivottables => [:index]}, :public => true
