@@ -3,7 +3,7 @@ require 'query_column_patch'
 
 Rails.configuration.to_prepare do
   if Redmine::VERSION.to_s < "2.6.0"
-    Rails.logger.info "########################################"
+    Rails.logger.info "redmine_pivot_table: patching QueryColumn for Redmine <2.6.0"
     require_dependency 'query'
     QueryColumn.send(:include, RedminePivotTable::QueryColumnPatch)
   end
