@@ -1,3 +1,16 @@
+require 'redmine'
+require 'query_column_patch'
+
+Rails.configuration.to_prepare do
+  if Redmine::VERSION.to_s < "2.6.0"
+    Rails.logger.info "########################################"
+    require_dependency 'query'
+    QueryColumn.send(:include, RedminePivotTable::QueryColumnPatch)
+  end
+end
+
+
+
 Redmine::Plugin.register :redmine_pivot_table do
   name 'Redmine Pivot Table plugin'
   author 'Daiju Kito'
