@@ -30,6 +30,7 @@
 <%  @query.available_columns[0] = QueryColumn.new(:id, :sortable => @query.available_columns[0].sortable, :default_order => @query.available_columns[0].default_order, :caption => "ID", :frozen => true) %>
 
 var renderers;
+var c3_renderers;
 
 $(document).ready(function(){
 
@@ -48,7 +49,14 @@ $(document).ready(function(){
 
            var dateFormat = $.pivotUtilities.derivers.dateFormat;
 
-           var c3_renderers = $.pivotUtilities.locales["<%= @language %>"].c3_renderers || $.pivotUtilities.c3_renderers;
+           if ($.pivotUtilities.locales["<%= @language %>"]) {
+               renderers = $.pivotUtilities.locales["<%= @language %>"].renderers;
+               c3_renderers = $.pivotUtilities.locales["<%= @language %>"].c3_renderers;
+           } else {
+               renderers = $.pivotUtilities.renderers;
+               c3_renderers = $.pivotUtilities.c3_renderers;
+           }
+
            var ext_renderers = {};
 
            // strip html tags for C3 renderers
@@ -84,7 +92,7 @@ $(document).ready(function(){
                }
            };
 
-           renderers = $.extend($.pivotUtilities.locales["<%= @language %>"].renderers, ext_renderers);
+           renderers = $.extend(renderers, ext_renderers);
 
            $("#output").pivotUI(data, {
 
