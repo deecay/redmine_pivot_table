@@ -13,7 +13,7 @@ With this plugin you can:
 ![Image](https://raw.github.com/wiki/deecay/redmine_pivot_table/images/table_simple.jpg)
 
 Requieres IE8 and above.
-PivotTable.js version included: 2015-06-19
+PivotTable.js version included: 2015-09-08
 
 
 ## Installation
@@ -41,6 +41,8 @@ For more information on usage, visit [PivotTable.js Home page](http://nicolas.kr
 
 ![Image](https://raw.github.com/wiki/deecay/redmine_pivot_table/images/bar.jpg)
 
+![Image](https://raw.github.com/wiki/deecay/redmine_pivot_table/images/scatter.jpg)
+First attribute of vertical and horizontal attribute must be a numeric attribute. Append some other attributes to horizontal, to see colorized scatter plot.
 
 
 ## Todo
