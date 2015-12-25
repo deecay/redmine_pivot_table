@@ -3,3 +3,7 @@ ja:
   project_module_pivottables: "ピボット集計"
   header: "ピボット集計"
   include_closed: "終了を含める"
+  clear_all: "全ての項目をクリア"
+  show_url: "URLを表示"
+  show_url_tips: "現在の設定をお気に入りやWikiに使えるURLとして表示"
+

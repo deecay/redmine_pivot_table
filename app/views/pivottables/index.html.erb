@@ -152,8 +152,8 @@ function update_url(config){
 <%= hidden_field_tag("action", "submit") %>
 <% end %>
 
-<img title="Clear all attributes" src="/redmine/images/close.png" alt="Clear all attributes" style="float: right; cursor: pointer;" onclick="clear_attr();">
+<img title="<%= l(:clear_all) %>" src="/redmine/images/close.png" alt="<%= l(:clear_all) %>" style="float: right; cursor: pointer;" onclick="clear_attr();">
 
 <div id="output"></div>
 
-<a href="#" onclick="$(&#x27;#url&#x27;).toggle();; return false;" style="font-size: 9px;" title="Save this configuration for browser favorites or Wiki pages">Show URL</a><input type="text" id="url" style="font-size: 11px; color: #767676; border: 1px solid #ccc; margin: 0px 2px 0px 2px; display: none;" readonly>
+<a href="#" onclick="$(&#x27;#url&#x27;).toggle();; return false;" style="font-size: 9px;" title="<%= l(:show_url_tips) %>"><%= l(:show_url) %></a><input type="text" id="url" style="font-size: 11px; color: #767676; border: 1px solid #ccc; margin: 0px 2px 0px 2px; display: none;" readonly>
