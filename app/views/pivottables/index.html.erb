@@ -55,8 +55,8 @@ $(document).ready(function(){
            var dateFormat = $.pivotUtilities.derivers.dateFormat;
 
            if ($.pivotUtilities.locales["<%= @language %>"]) {
-               renderers = $.pivotUtilities.locales["<%= @language %>"].renderers;
-               c3_renderers = $.pivotUtilities.locales["<%= @language %>"].c3_renderers;
+               renderers = $.pivotUtilities.locales["<%= @language %>"].renderers || $.pivotUtilities.renderers;
+               c3_renderers = $.pivotUtilities.locales["<%= @language %>"].c3_renderers || $.pivotUtilities.c3_renderers;
            } else {
                renderers = $.pivotUtilities.renderers;
                c3_renderers = $.pivotUtilities.c3_renderers;
