@@ -8,7 +8,7 @@ This Redmine plugin allows you to generate pivot table for issue analysis.
 It uses [PivotTable.js](http://nicolas.kruchten.com/pivottable/examples/) as a user interface.
 
 With this plugin you can:
-* Analyze issues using pivot tables
+* Analyze issues and activities by dynamically creating pivot tables and graphs
 
 ![Image](https://raw.github.com/wiki/deecay/redmine_pivot_table/images/table_simple.jpg)
 
@@ -29,9 +29,11 @@ No migration required.
 
 ## How to use
 
-Drag and drop fields 
+Drag and drop attributes to dynamically create your own pivot table.
 
 For more information on usage, visit [PivotTable.js Home page](http://nicolas.kruchten.com/pivottable/examples/).
+
+If you want to keep the configuration and save it for the future, click on "Show URL" at the bottom, copy the shown link, and then create a wiki entry with that URL. The link can also be used as a browser favorites.
 
 ## Other screenshots
 
@@ -42,8 +44,9 @@ For more information on usage, visit [PivotTable.js Home page](http://nicolas.kr
 ![Image](https://raw.github.com/wiki/deecay/redmine_pivot_table/images/bar.jpg)
 
 ![Image](https://raw.github.com/wiki/deecay/redmine_pivot_table/images/scatter.jpg)
-First attribute of vertical and horizontal attribute must be a numeric attribute. Append some other attributes to horizontal, to see colorized scatter plot.
+First attribute of both vertical and horizontal attribute must be a numeric attribute. Append some other attributes to horizontal, to see colorized scatter plot.
 
+![Image](https://raw.github.com/wiki/deecay/redmine_pivot_table/images/activity.jpg)
 
 ## Todo
 
