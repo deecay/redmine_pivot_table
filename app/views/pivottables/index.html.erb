@@ -27,7 +27,6 @@
 
 <script type="text/javascript">
 
-<%  @query.available_columns[0] = QueryColumn.new(:id, :sortable => @query.available_columns[0].sortable, :default_order => @query.available_columns[0].default_order, :caption => "ID", :frozen => true) %>
 
 var renderers;
 var c3_renderers;
@@ -36,7 +35,12 @@ $(document).ready(function(){
 
            var sortAs = $.pivotUtilities.sortAs;
 
-           data = 
+           <% if @table == "activity" %>
+             data = <%= raw parse_events(@events).to_json %>;
+           <% else %>
+             <%  @query.available_columns[0] = QueryColumn.new(:id, :sortable => @query.available_columns[0].sortable, :default_order => @query.available_columns[0].default_order, :caption => "ID", :frozen => true) %>
+
+             data = 
 [<% @issues.each_with_index do |issue, i| -%><%
 
 %> { <% @query.available_columns.each_with_index do |column, j| -%><%
@@ -46,6 +50,7 @@ $(document).ready(function(){
 %> } <% if (i < @issues.size - 1) -%>,<% end -%><% end -%>
 
 ];
+           <% end %>
 
            var dateFormat = $.pivotUtilities.derivers.dateFormat;
 
@@ -94,6 +99,7 @@ $(document).ready(function(){
 
            renderers = $.extend(renderers, ext_renderers);
 
+           // main
            $("#output").pivotUI(data, {
 
               renderers: renderers,
@@ -107,8 +113,13 @@ $(document).ready(function(){
               <%= raw %|rendererName: "#{@rendererName}",| if @rendererName %>
               <%= raw %|aggregatorName: "#{@aggregatorName}",| if @aggregatorName %>
               <%= raw %|vals: ["#{@vals.join('","')}"],| if @vals %>
-              <%= raw @rows == nil ? %|rows: ["#{pv_caption(:fixed_version)}", "#{pv_caption(:assigned_to)}"],| : %|rows: ["#{@rows.join('","')}"],| %>
-              <%= raw @cols == nil ? %|cols: ["#{pv_caption(:status)}"],| : %|cols: ["#{@cols.join('","')}"],| %>
+              <% if @table == "activity" %>
+                <%= raw @rows == nil ? %|rows: ["#{l(:field_author)}"],| : %|rows: ["#{@rows.join('","')}"],| %>
+                <%= raw @cols == nil ? %|cols: ["#{l(:field_created_on)+"(y)"}", "#{l(:field_created_on)+"(m)"}", "#{l(:field_created_on)+"(d)"}"],| : %|cols: ["#{@cols.join('","')}"],| %>
+              <% else %>
+                <%= raw @rows == nil ? %|rows: ["#{pv_caption(:fixed_version)}", "#{pv_caption(:assigned_to)}"],| : %|rows: ["#{@rows.join('","')}"],| %>
+                <%= raw @cols == nil ? %|cols: ["#{pv_caption(:status)}"],| : %|cols: ["#{@cols.join('","')}"],| %>
+              <% end %>
               unusedAttrsVertical: false
            }, false, "<%= @language %>");
 
@@ -137,23 +148,41 @@ function clear_attr(){
 }
 function update_url(config){
     var config_copy = JSON.parse(JSON.stringify(config));
-    var check_value = $("#closed")[0].checked ? "1" : "0";
-    $("#url").val("<%= request.original_url.split("?")[0] -%>" + "?" +
-                  "action=submit&" +
-                  "rows=" + encodeURI(config_copy["rows"]) + "&" +
-                  "cols=" + encodeURI(config_copy["cols"]) + "&" +
-                  "rendererName=" + encodeURI(config_copy["rendererName"]) + "&" +
-                  "aggregatorName=" + encodeURI(config_copy["aggregatorName"]) + "&" +
-                  "closed=" + check_value );
+    var link_url = "<%= request.original_url.split("?")[0] -%>" + "?" +
+                   "action=submit&" +
+                   "table=" + "<%= @table %>" + "&" +
+                   "rows=" + encodeURI(config_copy["rows"]) + "&" +
+                   "cols=" + encodeURI(config_copy["cols"]) + "&" +
+                   "rendererName=" + encodeURI(config_copy["rendererName"]) + "&" +
+                   "aggregatorName=" + encodeURI(config_copy["aggregatorName"]);
+    if ("<%= @table %>" == "") {
+        var check_value = $("#closed")[0].checked ? "1" : "0";
+        link_url = link_url + "&" + "closed=" + check_value;
+    }
+
+    $("#url").val(link_url);
 }
 </script>
-<%= form_tag({:controller => 'pivottables', :action => 'index', :project_id => @project } , :method => :get, :id => 'query_form' ) do %>
-<%= check_box_tag('closed', 1, params[:closed] == '1', :onclick=>"submit();") %> <%= l(:include_closed) %>
-<%= hidden_field_tag("action", "submit") %>
+
+<% if @table == "activity" %>
+  <%= l(:label_activity) %> |
+  <%= link_to l(:label_issue), "pivottables" %> 
+<% else %>
+  <span style="margin-right: 15px;">
+  <%= link_to l(:label_activity), "pivottables?table=activity" %> |
+  <%= l(:label_issue) %>
+  </span>
+  <%= form_tag({:controller => 'pivottables', :action => 'index', :project_id => @project } , :method => :get, :id => 'query_form' ) do %>
+    <%= check_box_tag('closed', 1, params[:closed] == '1', :onclick=>"submit();") %> <%= l(:include_closed) %>
+    <%= hidden_field_tag("action", "submit") %>
+  <% end %>
 <% end %>
 
 <img title="<%= l(:clear_all) %>" src="/redmine/images/close.png" alt="<%= l(:clear_all) %>" style="float: right; cursor: pointer;" onclick="clear_attr();">
 
 <div id="output"></div>
 
-<a href="#" onclick="$(&#x27;#url&#x27;).toggle();; return false;" style="font-size: 9px;" title="<%= l(:show_url_tips) %>"><%= l(:show_url) %></a><input type="text" id="url" style="font-size: 11px; color: #767676; border: 1px solid #ccc; margin: 0px 2px 0px 2px; display: none;" readonly>
+<a href="#" onclick="$(&#x27;#url&#x27;).toggle();; return false;" style="font-size: 9px;" title="<%= l(:show_url_tips) %>">
+ <%= l(:show_url) %>
+</a>
+<input type="text" id="url" style="font-size: 11px; color: #767676; border: 1px solid #ccc; margin: 0px 2px 0px 2px; display: none;" readonly>

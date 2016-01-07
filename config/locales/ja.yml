@@ -6,4 +6,5 @@ ja:
   clear_all: "全ての項目をクリア"
   show_url: "URLを表示"
   show_url_tips: "現在の設定をお気に入りやWikiに使えるURLとして表示"
+  label_issue_note_plural: "チケット編集"
 
