@@ -20,7 +20,8 @@ class PivottablesControllerTest < ActionController::TestCase
   end
 
   def test_module_enabled
-    assert_equal %w(pivottable issue_tracking), @project.enabled_module_names
+    assert @project.enabled_module_names.find(:pivottable)
+    assert @project.enabled_module_names.find(:issue_tracking)
   end
 
   def test_index
@@ -43,20 +44,53 @@ class PivottablesControllerTest < ActionController::TestCase
     get :index, {:project_id => 1,
                  :rows => "Author,Tracker",
                  :cols => "Status,Category",
-                 :aggregatorName => "Integer Sum",
-                 :vals => "Estimated Time",
+                 :vals => "Estimated time,Spent time",
+                 :aggregatorName => "Sum over Sum",
                  :rendererName => "Table"}
     assert_equal %w(Author Tracker), assigns(:rows)
     assert_equal %w(Status Category), assigns(:cols)
-    assert_equal "Integer Sum", assigns(:aggregatorName)
-    assert_equal ["Estimated Time"], assigns(:vals)
+    assert_equal ["Estimated time", "Spent time"], assigns(:vals)
+    assert_equal "Sum over Sum", assigns(:aggregatorName)
     assert_equal "Table", assigns(:rendererName)
   end
 
   def test_activity
+    get :index, {:project_id => 1, :table => "activity"}
+    assert_equal 5, assigns(:events).count
+  end
+
+  def test_activity_different_user
     @request.session[:user_id] = 2
 
-    get :index, {:project_id => 5, :table => "activity"}
+    get :index, {:project_id => 1, :table => "activity"}
+    assert_equal 5, assigns(:events).count
+  end
+
+  def test_activity_public_project_anonymous
+    @request.session[:user_id] = 6
+
+    get :index, {:project_id => 1, :table => "activity"}
+    assert_equal 5, assigns(:events).count
+  end
+
+  def test_activity_private_project_anonymous
+    @request.session[:user_id] = 6
+
+    get :index, {:project_id => 2, :table => "activity"}
+    assert_equal 0, assigns(:events).count
+  end
+
+  def test_activity_private_project_assigned
+    @request.session[:user_id] = 2
+
+    get :index, {:project_id => 2, :table => "activity"}
+    assert_equal 1, assigns(:events).count
+  end
+
+  def test_activity_private_project_not_assigned
+    @request.session[:user_id] = 3
+
+    get :index, {:project_id => 2, :table => "activity"}
     assert_equal 0, assigns(:events).count
   end
 
