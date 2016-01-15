@@ -22,6 +22,16 @@
  .c3 text {font-family:Verdana, sans-serif;}
  .c3 text {font-size: 12px;}
  .c3-line {stroke-width: 3px;}
+
+#query_form { margin-left: 15px; }
+#url        { font-size: 11px;
+              color: #767676; 
+              border: 1px solid #ccc; 
+              margin: 0px 2px 0px 2px; 
+              display: none; }
+#show-url   { font-size: 9px; }
+#clear-all  { float: right; cursor: pointer; }
+
 </style>
 
 
@@ -164,25 +174,32 @@ function update_url(config){
 }
 </script>
 
+<span id="table-menu">
+
 <% if @table == "activity" %>
+
   <%= l(:label_activity) %> |
   <%= link_to l(:label_issue), "pivottables" %> 
+
 <% else %>
-  <span style="margin-right: 15px;">
+
   <%= link_to l(:label_activity), "pivottables?table=activity" %> |
   <%= l(:label_issue) %>
-  </span>
+
   <%= form_tag({:controller => 'pivottables', :action => 'index', :project_id => @project } , :method => :get, :id => 'query_form' ) do %>
     <%= check_box_tag('closed', 1, params[:closed] == '1', :onclick=>"submit();") %> <%= l(:include_closed) %>
     <%= hidden_field_tag("action", "submit") %>
   <% end %>
+
 <% end %>
 
-<img title="<%= l(:clear_all) %>" src="/redmine/images/close.png" alt="<%= l(:clear_all) %>" style="float: right; cursor: pointer;" onclick="clear_attr();">
+</span>
+
+<img id="clear-all" title="<%= l(:clear_all) %>" src="/redmine/images/close.png" alt="<%= l(:clear_all) %>" onclick="clear_attr();">
 
 <div id="output"></div>
 
-<a href="#" onclick="$(&#x27;#url&#x27;).toggle();; return false;" style="font-size: 9px;" title="<%= l(:show_url_tips) %>">
+<a href="#" onclick="$(&#x27;#url&#x27;).toggle();; return false;" title="<%= l(:show_url_tips) %>" id="show-url">
  <%= l(:show_url) %>
 </a>
-<input type="text" id="url" style="font-size: 11px; color: #767676; border: 1px solid #ccc; margin: 0px 2px 0px 2px; display: none;" readonly>
+<input type="text" id="url" readonly>
