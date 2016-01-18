@@ -194,8 +194,7 @@ function update_url(config){
 <% end %>
 
 </span>
-
-<img id="clear-all" title="<%= l(:clear_all) %>" src="/redmine/images/close.png" alt="<%= l(:clear_all) %>" onclick="clear_attr();">
+<%= image_tag( "close.png", :id => "clear-all", :alt => l(:clear_all), :title => l(:clear_all), :onClick => "clear_attr();" ) %>
 
 <div id="output"></div>
 
