@@ -42,6 +42,7 @@ class Redmine::UiTest::PivottableTest < Redmine::UiTest::Base
     end
 
     assert_equal "Table", page.find('select.pvtRenderer').value
+    assert page.find('select.pvtRenderer').find(:option, "Bar Chart")
 
     assert page.has_selector?('table.pvtTable')
 
@@ -149,7 +150,8 @@ class Redmine::UiTest::PivottableTest < Redmine::UiTest::Base
     take_screenshots
   end
 
-  def test_ui_i18n
+  def test_ui_i18n_ja
+    # locale yml, locale pivot js
     log_user('admin', 'admin')
     visit '/my/account'
 
@@ -158,10 +160,82 @@ class Redmine::UiTest::PivottableTest < Redmine::UiTest::Base
     click_on('Save')
 
     visit '/projects/001/pivottables'
- 
+
+    assert_equal "活動 | チケット 終了を含める", page.find('span#table-menu').text
+
+    assert_equal "URLを表示", page.find('a#show-url').text
+
+    assert_equal "表形式", page.find('select.pvtRenderer').value
+    assert       page.find('select.pvtRenderer').find(:option, "棒グラフ")
+
+    assert page.has_selector?('table.pvtTable')
+
     take_screenshots
 
   end
 
+  def test_ui_i18n_fr
+    # No locale yml, locale pivot js
+    log_user('admin', 'admin')
+    visit '/my/account'
+
+    assert page.find('#user_language').find(:option, "French (Français)").select_option
+
+    click_on('Save')
+
+    visit '/projects/001/pivottables'
+
+    assert_equal "Activité | Demande Include closed", page.find('span#table-menu').text
+
+    assert page.find('select.pvtRenderer').find(:option, "Table avec barres")
+    assert page.find('select.pvtRenderer').find(:option, "Bar Chart")
+
+    assert page.has_selector?('table.pvtTable')
+
+    take_screenshots
+
+  end
+
+  def test_ui_i18n_tr
+    # locale yml, no locale pivot js
+    log_user('admin', 'admin')
+    visit '/my/account'
+
+    assert page.find('#user_language').find(:option, "Turkish (Türkçe)").select_option
+
+    click_on('Save')
+
+    visit '/projects/001/pivottables'
+
+    assert_equal "Faaliyet | İş Kapalıları dahil et", page.find('span#table-menu').text
+
+    assert_equal "Table", page.find('select.pvtRenderer').value
+    assert page.find('select.pvtRenderer').find(:option, "Bar Chart")
+
+    assert page.has_selector?('table.pvtTable')
+
+    take_screenshots
+  end
+
+  def test_ui_i18n_zh
+    # No locale yml, no locale pivot js
+    log_user('admin', 'admin')
+    visit '/my/account'
+
+    assert page.find('#user_language').find(:option, "Simplified Chinese (简体中文)").select_option
+
+    click_on('Save')
+
+    visit '/projects/001/pivottables'
+
+    assert_equal "活动 | 问题 Include closed", page.find('span#table-menu').text
+
+    assert_equal "Table", page.find('select.pvtRenderer').value
+    assert page.find('select.pvtRenderer').find(:option, "Bar Chart")
+
+    assert page.has_selector?('table.pvtTable')
+
+    take_screenshots
+  end
 
 end
