@@ -22,7 +22,7 @@ module PivottablesHelper
 
       end
 
-      activity = l("label_#{e.event_type.singularize.gsub(/-/, '_')}_plural")
+      activity = l("label_#{e.event_type.split(' ').first.singularize.gsub(/-/, '_')}_plural")
       author = link_to_user(e.event_author) if e.respond_to?(:event_author)
       title = link_to(format_activity_title(e.event_title), e.event_url)
 
