@@ -167,10 +167,6 @@ function update_url(config){
                    "cols=" + encodeURI(config_copy["cols"]) + "&" +
                    "rendererName=" + encodeURI(config_copy["rendererName"]) + "&" +
                    "aggregatorName=" + encodeURI(config_copy["aggregatorName"]);
-    if ("<%= @table %>" == "") {
-        var check_value = $("#closed")[0].checked ? "1" : "0";
-        link_url = link_url + "&" + "closed=" + check_value;
-    }
 
     $("#url").val(link_url);
 }
