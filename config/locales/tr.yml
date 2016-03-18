@@ -3,7 +3,6 @@ tr:
   label_pivottables: "Pivot"
   project_module_pivottables: "Pivot"
   header: "Pivot Tablo"
-  include_closed: "Kapalıları dahil et"
   clear_all: "Tercihleri Sıfırla"
   show_url: "URL Göster"
   show_url_tips: "Bu konfigrasyonu tarayıcı favorilerine veya viki sayfalarında saklayabilirsiniz"

@@ -25,14 +25,14 @@
  .c3 text {font-size: 12px;}
  .c3-line {stroke-width: 3px;}
 
-#query_form { margin-left: 15px; }
 #url        { font-size: 11px;
               color: #767676; 
               border: 1px solid #ccc; 
               margin: 0px 2px 0px 2px; 
               display: none; }
 #show-url   { font-size: 9px; }
-#clear-all  { float: right; cursor: pointer; }
+#clear-all  { float: right; cursor: pointer; margin-top: -15px; }
+#output     { margin-top: -15px; }
 
 </style>
 
@@ -176,27 +176,37 @@ function update_url(config){
 }
 </script>
 
-<span id="table-menu">
+<div class="tabs">
+  <ul>
+    <li><%= link_to l(:label_issue), "pivottables", :class => (@table != 'activity' ? 'selected' : nil) %></li>
+    <li><%= link_to l(:label_activity), "pivottables?table=activity", :class => (@table == 'activity' ? 'selected' : nil) %></li>
+  </ul>
+</div>
 
-<% if @table == "activity" %>
-
-  <%= l(:label_activity) %> |
-  <%= link_to l(:label_issue), "pivottables" %> 
-
-<% else %>
-
-  <%= link_to l(:label_activity), "pivottables?table=activity" %> |
-  <%= l(:label_issue) %>
-
+<% if @table != "activity" %>
   <%= form_tag({:controller => 'pivottables', :action => 'index', :project_id => @project } , :method => :get, :id => 'query_form' ) do %>
-    <%= check_box_tag('closed', 1, params[:closed] == '1', :onclick=>"submit();") %> <%= l(:include_closed) %>
-    <%= hidden_field_tag("action", "submit") %>
-  <% end %>
 
+    <%= hidden_field_tag 'set_filter', '1' %>
+    <%= hidden_field_tag 'pivot', '1' %>
+
+    <fieldset id="filters" class="collapsible <%= @query.new_record? ? "" : "collapsed" %>">
+      <legend onclick="toggleFieldset(this);"><%= l(:label_filter_plural) %></legend>
+      <div style="<%= @query.new_record? ? "" : "display: none;" %>">
+        <%= render :partial => 'queries/filters', :locals => {:query => @query} %>
+      </div>
+    </fieldset>
+
+    <p class="buttons">
+    <%= link_to_function l(:button_apply), '$("#query_form").submit()',
+                         :class => 'icon icon-checked' %>
+    <%= link_to l(:button_clear), { :project_id => @project, :set_filter => 1 },
+                :class => 'icon icon-reload' %>
+    </p>
+  <% end %>
 <% end %>
 
-</span>
 <%= image_tag( "close.png", :id => "clear-all", :alt => l(:clear_all), :title => l(:clear_all), :onClick => "clear_attr();" ) %>
+<br/>
 
 <div id="output"></div>
 

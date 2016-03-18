@@ -2,7 +2,6 @@ en:
   label_pivottables: "Pivot"
   project_module_pivottables: "Pivot"
   header: "Pivot Table"
-  include_closed: "Include closed"
   clear_all: "Clear all attributes"
   show_url: "Show URL"
   show_url_tips: "Save this configuration for browser favorites or Wiki pages"

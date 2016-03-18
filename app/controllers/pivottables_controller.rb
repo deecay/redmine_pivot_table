@@ -41,8 +41,6 @@ class PivottablesController < ApplicationController
 
       if (params[:closed] == "1")
           @query.add_filter("status_id", "*", [''])
-      else
-          @query.add_filter("status_id", "o", [''])
       end
 
       @issues = @query.issues(:include => [:assigned_to, :tracker, :priority, :category, :fixed_version],

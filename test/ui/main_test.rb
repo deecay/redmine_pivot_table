@@ -31,15 +31,11 @@ class Redmine::UiTest::PivottableTest < Redmine::UiTest::Base
     log_user('admin', 'admin')
     visit '/projects/001/pivottables'
 
-    assert_equal "Activity | Issue Include closed", page.find('span#table-menu').text
-    assert_equal "Activity", page.find('span#table-menu').find('a').text
+    assert_equal "Issue Activity", page.find('div.tabs').text
 
     assert_equal "Show URL", page.find('a#show-url').text
     assert page.find('input#url', visible: false)
 
-    within('form#query_form') do
-      assert_not page.find('input#closed')['checked']
-    end
 
     assert_equal "Table", page.find('select.pvtRenderer').value
     assert page.find('select.pvtRenderer').find(:option, "Bar Chart")
@@ -58,26 +54,6 @@ class Redmine::UiTest::PivottableTest < Redmine::UiTest::Base
 
     tbl = page.find('table.pvtTable')
     assert_equal(["1", "1"], [tbl['data-numrows'], tbl['data-numcols']] )
-
-    take_screenshots
-  end
-
-  def test_ui_issue_closed
-    log_user('admin', 'admin')
-    visit '/projects/001/pivottables'
-
-    assert_not page.find('input#closed')['checked']
-
-    within('form#query_form') do
-      check('closed')
-    end
-
-    within('form#query_form') do
-      assert page.find('input#closed')['checked']
-    end
-
-    tbl = page.find('table.pvtTable')
-    assert_equal(["2", "3"], [tbl['data-numrows'], tbl['data-numcols']] )
 
     take_screenshots
   end
@@ -161,7 +137,7 @@ class Redmine::UiTest::PivottableTest < Redmine::UiTest::Base
 
     visit '/projects/001/pivottables'
 
-    assert_equal "活動 | チケット 終了を含める", page.find('span#table-menu').text
+    assert_equal "チケット 活動", page.find('div.tabs').text
 
     assert_equal "URLを表示", page.find('a#show-url').text
 
@@ -185,7 +161,7 @@ class Redmine::UiTest::PivottableTest < Redmine::UiTest::Base
 
     visit '/projects/001/pivottables'
 
-    assert_equal "Activité | Demande Include closed", page.find('span#table-menu').text
+    assert_equal "Demande Activité", page.find('div.tabs').text
 
     assert page.find('select.pvtRenderer').find(:option, "Table avec barres")
     assert page.find('select.pvtRenderer').find(:option, "Bar Chart")
@@ -207,7 +183,7 @@ class Redmine::UiTest::PivottableTest < Redmine::UiTest::Base
 
     visit '/projects/001/pivottables'
 
-    assert_equal "Faaliyet | İş Kapalıları dahil et", page.find('span#table-menu').text
+    assert_equal "İş Faaliyet", page.find('div.tabs').text
 
     assert_equal "Table", page.find('select.pvtRenderer').value
     assert page.find('select.pvtRenderer').find(:option, "Bar Chart")
@@ -228,7 +204,7 @@ class Redmine::UiTest::PivottableTest < Redmine::UiTest::Base
 
     visit '/projects/001/pivottables'
 
-    assert_equal "活动 | 问题 Include closed", page.find('span#table-menu').text
+    assert_equal "问题 活动", page.find('div.tabs').text
 
     assert_equal "Table", page.find('select.pvtRenderer').value
     assert page.find('select.pvtRenderer').find(:option, "Bar Chart")
