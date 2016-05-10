@@ -1,5 +1,6 @@
 class PivottablesController < ApplicationController
   unloadable
+  before_filter :find_project, :authorize, :only => :index
 
   helper :queries
   include QueriesHelper
@@ -47,6 +48,11 @@ class PivottablesController < ApplicationController
                               :offset => 0,
                               :limit => 1000)
     end
+  end
+
+  def find_project
+    # @project variable must be set before calling the authorize filter
+    @project = Project.find(params[:project_id])
   end
 
 end

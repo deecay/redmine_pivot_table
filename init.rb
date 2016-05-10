@@ -19,7 +19,8 @@ Redmine::Plugin.register :redmine_pivot_table do
   url 'https://github.com/deecay/redmine_pivot_table'
 
   project_module :pivottables do
-    permission :pivottables, {:pivottables => [:index]}, :public => true
+#    permission :pivottables, {:pivottables => [:index]}, :public => true
+    permission :view_pivottables, :pivottables => [:index]
   end
 
   menu :project_menu, :pivottables, { :controller => 'pivottables', :action => 'index' }, :after => :activity, :param => :project_id

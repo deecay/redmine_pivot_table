@@ -22,7 +22,9 @@ PivotTable.js version included: 2015-09-08
 
 1. Enable Pivot module for your project.
 
-2. Go to Pivot tab.
+2. Allow permission to view pivottables from Administration -> Roles and permissions
+
+3. Go to Pivot tab of your project.
 
 No migration required.
 
