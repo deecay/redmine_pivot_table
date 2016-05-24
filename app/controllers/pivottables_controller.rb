@@ -22,7 +22,7 @@ class PivottablesController < ApplicationController
     @rows = params[:rows] ? params[:rows].split(",") : nil
     @cols = params[:cols] ? params[:cols].split(",") : nil
     @aggregatorName = params[:aggregatorName]
-    @vals = params[:vals] ? params[:vals].split(",") : nil
+    @vals = params[:attrdropdown] ? params[:attrdropdown].split(",") : nil
     @rendererName = params[:rendererName]
 
     @table = params[:table]
