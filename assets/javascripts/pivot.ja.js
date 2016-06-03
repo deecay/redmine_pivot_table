@@ -53,7 +53,7 @@
         "平均": tpl.average(jaFmt),
         "最小": tpl.min(jaFmt),
         "最大": tpl.max(jaFmt),
-        "合計＋合計": tpl.sumOverSum(jaFmt),
+        "合計/合計": tpl.sumOverSum(jaFmt),
         "80%　上限": tpl.sumOverSumBound80(true, jaFmt),
         "80%　下限": tpl.sumOverSumBound80(false, jaFmt),
         "総計に対する数量比率": tpl.fractionOf(tpl.sum(), "total", jaFmtPct),
