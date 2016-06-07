@@ -35,7 +35,7 @@ Drag and drop attributes to dynamically create your own pivot table.
 
 For more information on usage, visit [PivotTable.js Home page](http://nicolas.kruchten.com/pivottable/examples/).
 
-If you want to keep the configuration and save it for the future, click on "Show URL" at the bottom, copy the shown link, and then create a wiki entry with that URL. The link can also be used as a browser favorites.
+You can save the pivot table configuration when you save a query from the Pivot page.
 
 ## Other screenshots
 
@@ -52,6 +52,9 @@ First attribute of both vertical and horizontal attribute must be a numeric attr
 
 ## Todo
 
+* Add "edit pivot query".
+* Some clean-ups of code and locale after recent changes.
+* Add workaround for dropped HTML support in pivottable.js.
 * i18n of renderers and aggregators.
 
 
