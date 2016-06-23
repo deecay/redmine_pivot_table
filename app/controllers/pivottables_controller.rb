@@ -25,7 +25,7 @@ class PivottablesController < ApplicationController
     end
 
     retrieve_query
-    if (!@query.new_record? && params[:table] != "activity")
+    if (!@query.new_record? && @query.options[:pivot_config])
       pivot_config = @query.options[:pivot_config]
       pivot_config.each do |k, v|
         params[k] = v
