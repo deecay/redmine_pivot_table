@@ -3,8 +3,6 @@ en:
   project_module_pivottables: "Pivot"
   header: "Pivot Table"
   clear_all: "Clear all attributes"
-  show_url: "Show URL"
-  show_url_tips: "Save this configuration for browser favorites or Wiki pages"
   label_issue_note_plural: "Issue notes"
   label_issue_closed_plural: "Issue closed"
 

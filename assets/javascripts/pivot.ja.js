@@ -12,26 +12,30 @@
   };
 
   callWithJQuery(function($) {
-    var jaFmt, jaFmtInt, jaFmtPct, nf, tpl;
+    var jaFmt, jaFmtInt, jaFmtPct, nf, tpl, c3r;
     nf = $.pivotUtilities.numberFormat;
     tpl = $.pivotUtilities.aggregatorTemplates;
+    c3r = $.pivotUtilities.c3_renderers;
     jaFmt = nf({
       thousandsSep: ",",
-      decimalSep: "."
+      decimalSep: ".",
+      showZero: true
     });
     jaFmtInt = nf({
       digitsAfterDecimal: 0,
       thousandsSep: ",",
-      decimalSep: "."
+      decimalSep: ".",
+      showZero: true
     });
     jaFmtPct = nf({
       digitsAfterDecimal: 1,
       scaler: 100,
       suffix: "%",
       thousandsSep: ",",
-      decimalSep: "."
+      decimalSep: ".",
+      showZero: true
     });
-    return $.pivotUtilities.locales.ja = {
+    $.pivotUtilities.locales.ja = {
       localeStrings: {
         renderError: "表示エラーが発生しました。",
         computeError: "集計エラーが発生しました。",
@@ -69,15 +73,18 @@
         "ヒートマップ": $.pivotUtilities.renderers["Heatmap"],
         "行ヒートマップ": $.pivotUtilities.renderers["Row Heatmap"],
         "列ヒートマップ": $.pivotUtilities.renderers["Col Heatmap"]
-      },
-      c3_renderers: {
-        "折れ線グラフ": $.pivotUtilities.c3_renderers["Line Chart"],
-        "棒グラフ": $.pivotUtilities.c3_renderers["Bar Chart"],
-        "積み上げ棒グラフ": $.pivotUtilities.c3_renderers["Stacked Bar Chart"],
-        "面グラフ": $.pivotUtilities.c3_renderers["Area Chart"],
-        "散布図": $.pivotUtilities.c3_renderers["Scatter Chart"]
       }
     };
+    if (c3r) {
+      $.pivotUtilities.locales.ja.c3_renderers = {
+        "折れ線グラフ": c3r["Line Chart"],
+        "棒グラフ": c3r["Bar Chart"],
+        "積み上げ棒グラフ": c3r["Stacked Bar Chart"],
+        "面グラフ": c3r["Area Chart"],
+        "散布図": c3r["Scatter Chart"]
+      };
+    }
+    return $.pivotUtilities.locales.ja;
   });
 
 }).call(this);

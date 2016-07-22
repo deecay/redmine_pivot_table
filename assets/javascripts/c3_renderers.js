@@ -3,15 +3,15 @@
 
   callWithJQuery = function(pivotModule) {
     if (typeof exports === "object" && typeof module === "object") {
-      return pivotModule(require("jquery"));
+      return pivotModule(require("jquery"), require("c3"));
     } else if (typeof define === "function" && define.amd) {
-      return define(["jquery"], pivotModule);
+      return define(["jquery", "c3"], pivotModule);
     } else {
-      return pivotModule(jQuery);
+      return pivotModule(jQuery, c3);
     }
   };
 
-  callWithJQuery(function($) {
+  callWithJQuery(function($, c3) {
     var makeC3Chart;
     makeC3Chart = function(chartOpts) {
       if (chartOpts == null) {
@@ -58,6 +58,7 @@
         })();
         rotationAngle = 0;
         fullAggName = pivotData.aggregatorName;
+        fullAggName = $("<textarea/>").html(fullAggName).text();
         if (pivotData.valAttrs.length) {
           fullAggName += "(" + (pivotData.valAttrs.join(", ")) + ")";
         }
@@ -120,17 +121,12 @@
             row = [rowHeader === "" ? pivotData.aggregatorName : rowHeader];
             for (m = 0, len4 = colKeys.length; m < len4; m++) {
               colKey = colKeys[m];
-              agg = pivotData.getAggregator(rowKey, colKey);
-              if (agg.value() != null) {
-                val = agg.value();
-                if ($.isNumeric(val)) {
-                  if (val < 1) {
-                    row.push(parseFloat(val.toPrecision(3)));
-                  } else {
-                    row.push(parseFloat(val.toFixed(3)));
-                  }
+              val = parseFloat(pivotData.getAggregator(rowKey, colKey).value());
+              if (isFinite(val)) {
+                if (val < 1) {
+                  row.push(val.toPrecision(3));
                 } else {
-                  row.push(val);
+                  row.push(val.toFixed(3));
                 }
               } else {
                 row.push(null);

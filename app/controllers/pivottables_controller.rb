@@ -20,10 +20,6 @@ class PivottablesController < ApplicationController
     @language_js = "pivot." + current_language.to_s + ".js"
     @statuses = IssueStatus.sorted.collect{|s| [s.name] }
 
-    if (params[:query_id])
-      @query = Query.find(params[:query_id])
-    end
-
     retrieve_query
     if (!@query.new_record? && @query.options[:pivot_config])
       pivot_config = @query.options[:pivot_config]
@@ -40,6 +36,7 @@ class PivottablesController < ApplicationController
 
     @table = params[:table]
 
+    # Cleanup for sidebar query list.
     params.delete("rows")
     params.delete("cols")
     params.delete("aggregatorName")
@@ -103,6 +100,7 @@ class PivottablesController < ApplicationController
       @query.visibility = IssueQuery::VISIBILITY_PRIVATE
     end
 
+ 
     config = params[:query][:options][:pivot_config]
     @query.options[:pivot_config] = { :table => config[:table],
                :rows => config[:rows],
@@ -113,7 +111,7 @@ class PivottablesController < ApplicationController
 
     if @query.save
       flash[:notice] = l(:notice_successful_create)
-      redirect_to project_pivottables_path(@project)
+      redirect_to project_pivottables_path(@project, :query_id => @query.id)
     else
       render :action => 'new', :layout => !request.xhr?
     end
