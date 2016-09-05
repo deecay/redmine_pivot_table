@@ -1,0 +1,9 @@
+# Simplified Chinese i18n Created by Steven.W
+zh:
+  label_pivottables: "透视图表"
+  project_module_pivottables: "透视图表"
+  header: "透视图表"
+  clear_all: "清除所有属性"
+  label_issue_note_plural: "问题批注"
+  label_issue_closed_plural: "问题已关闭"
+
