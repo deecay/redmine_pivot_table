@@ -1,0 +1,7 @@
+pt-br:
+  label_pivottables: "Pivot"
+  project_module_pivottables: "Pivot"
+  header: "Pivot Table"
+  clear_all: "Limpar todos os filtros"
+  label_issue_note_plural: "Notas da tarefa"
+  label_issue_closed_plural: "Tarefa fechada"

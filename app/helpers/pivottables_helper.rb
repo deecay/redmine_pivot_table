@@ -48,4 +48,32 @@ module PivottablesHelper
     result_list
 
   end
+
+  def parse_issues(issues)
+    result_list = Array.new
+
+    issues.each{|i|
+      formatted_issue = {}
+      @query.available_columns.each{|c|
+        if c.name.to_s == "id"
+          formatted_issue["ID"] = column_content(c, i)
+        elsif column_content(c, i).to_s.include?("<p class=\"percent\">")
+          formatted_issue[c.caption] = c.value_object(i).to_s
+        elsif c.name.to_s == "subject"
+          formatted_issue[c.caption] = strip_tags(column_content(c, i))
+        else
+          formatted_issue[c.caption] = column_content(c, i)
+        end
+      }
+      result_list.push(formatted_issue)
+    }
+
+    result_list 
+  end
+
+  def javascript_exists?(script)
+    # Used to avoid Route Error in logs.
+    script = "#{Rails.root}/public/plugin_assets/redmine_pivot_table/javascripts/#{script}"
+    File.exists?(script) || File.exists?("#{script}.coffee") 
+  end
 end

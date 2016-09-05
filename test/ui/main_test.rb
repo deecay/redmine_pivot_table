@@ -4,7 +4,7 @@ class Redmine::UiTest::PivottableTest < Redmine::UiTest::Base
   fixtures :projects, :users, :email_addresses, :roles, :members, :member_roles,
            :trackers, :projects_trackers, :enabled_modules, :issue_statuses, :issues,
            :enumerations, :custom_fields, :custom_values, :custom_fields_trackers,
-           :watchers
+           :watchers, :queries
 
   def take_screenshots( comment = "" )
     method = caller[0][/`.*'/][1..-2]
@@ -24,18 +24,17 @@ class Redmine::UiTest::PivottableTest < Redmine::UiTest::Base
     end
   end
 
-  def enable_pivottable
+  setup do
+    Project.find(1).enabled_module_names = %w(pivottables issue_tracking)
+    Project.find(2).enabled_module_names = %w(pivottables issue_tracking)
+    Role.non_member.add_permission! :view_pivottables
   end
 
   def test_ui_init
     log_user('admin', 'admin')
-    visit '/projects/001/pivottables'
+    visit '/projects/ecookbook/pivottables'
 
     assert_equal "Issue Activity", page.find('div.tabs').text
-
-    assert_equal "Show URL", page.find('a#show-url').text
-    assert page.find('input#url', visible: false)
-
 
     assert_equal "Table", page.find('select.pvtRenderer').value
     assert page.find('select.pvtRenderer').find(:option, "Bar Chart")
@@ -43,14 +42,14 @@ class Redmine::UiTest::PivottableTest < Redmine::UiTest::Base
     assert page.has_selector?('table.pvtTable')
 
     tbl = page.find('table.pvtTable')
-    assert_equal(["2", "2"], [tbl['data-numrows'], tbl['data-numcols']] )
+    assert_equal(["3", "2"], [tbl['data-numrows'], tbl['data-numcols']] )
 
     take_screenshots
   end
 
   def test_ui_init_project2
     log_user('admin', 'admin')
-    visit '/projects/002/pivottables'
+    visit '/projects/onlinestore/pivottables'
 
     tbl = page.find('table.pvtTable')
     assert_equal(["1", "1"], [tbl['data-numrows'], tbl['data-numcols']] )
@@ -60,7 +59,7 @@ class Redmine::UiTest::PivottableTest < Redmine::UiTest::Base
 
   def test_ui_activities
     log_user('admin', 'admin')
-    visit '/projects/001/pivottables?table=activity'
+    visit '/projects/ecookbook/pivottables?table=activity'
 
     tbl = page.find('table.pvtTable')
     assert_equal(["2", "5"], [tbl['data-numrows'], tbl['data-numcols']] )
@@ -70,7 +69,7 @@ class Redmine::UiTest::PivottableTest < Redmine::UiTest::Base
 
   def test_ui_renderers
     log_user('admin', 'admin')
-    visit '/projects/001/pivottables'
+    visit '/projects/ecookbook/pivottables'
 
     assert_equal "Table", page.find('select.pvtRenderer').value
     assert page.find('select.pvtRenderer').find(:option, "Bar Chart").select_option
@@ -95,7 +94,7 @@ class Redmine::UiTest::PivottableTest < Redmine::UiTest::Base
 
   def test_ui_clear_attributes
     log_user('admin', 'admin')
-    visit '/projects/001/pivottables'
+    visit '/projects/ecookbook/pivottables'
 
     page.find('#clear-all').click
 
@@ -105,20 +104,9 @@ class Redmine::UiTest::PivottableTest < Redmine::UiTest::Base
     take_screenshots
   end
 
-  def test_ui_show_url
-    log_user('admin', 'admin')
-    visit '/projects/001/pivottables'
-
-    click_on('show-url')
-
-    assert page.has_selector?('input#url')
-
-    take_screenshots
-  end
-
   def test_ui_get_params
     log_user('admin', 'admin')
-    visit '/projects/001/pivottables?rows=Author&cols=Status'
+    visit '/projects/ecookbook/pivottables?rows=Author&cols=Status'
 
     tbl = page.find('table.pvtTable')
     assert_equal(["1", "2"], [tbl['data-numrows'], tbl['data-numcols']] )
@@ -135,11 +123,9 @@ class Redmine::UiTest::PivottableTest < Redmine::UiTest::Base
 
     click_on('Save')
 
-    visit '/projects/001/pivottables'
+    visit '/projects/ecookbook/pivottables'
 
     assert_equal "チケット 活動", page.find('div.tabs').text
-
-    assert_equal "URLを表示", page.find('a#show-url').text
 
     assert_equal "表形式", page.find('select.pvtRenderer').value
     assert       page.find('select.pvtRenderer').find(:option, "棒グラフ")
@@ -159,7 +145,7 @@ class Redmine::UiTest::PivottableTest < Redmine::UiTest::Base
 
     click_on('Save')
 
-    visit '/projects/001/pivottables'
+    visit '/projects/ecookbook/pivottables'
 
     assert_equal "Demande Activité", page.find('div.tabs').text
 
@@ -181,12 +167,12 @@ class Redmine::UiTest::PivottableTest < Redmine::UiTest::Base
 
     click_on('Save')
 
-    visit '/projects/001/pivottables'
+    visit '/projects/ecookbook/pivottables'
 
     assert_equal "İş Faaliyet", page.find('div.tabs').text
 
-    assert_equal "Table", page.find('select.pvtRenderer').value
-    assert page.find('select.pvtRenderer').find(:option, "Bar Chart")
+    assert_equal "Tablo", page.find('select.pvtRenderer').value
+    assert page.find('select.pvtRenderer').find(:option, "Bar Grafiği")
 
     assert page.has_selector?('table.pvtTable')
 
@@ -214,4 +200,40 @@ class Redmine::UiTest::PivottableTest < Redmine::UiTest::Base
     take_screenshots
   end
 
+  def test_ui_save_and_load
+    log_user('admin', 'admin')
+    visit '/projects/ecookbook/pivottables?table=&rows=Author&cols=Status&rendererName=Bar+Chart&aggregatorName=Average&attrdropdown=%25+Done'
+
+    take_screenshots
+
+    click_on('Save')
+
+    fill_in 'Name', with: 'Test_UI'
+    choose 'query_visibility_2' #to any users
+
+    click_on('Save')
+
+    take_screenshots
+
+    click_on('Test_UI')
+    
+    assert_equal 'Bar Chart',  page.find('select.pvtRenderer').all('option').find(&:selected?).text
+
+    assert_not page.has_selector?('table.pvtTable')
+    assert     page.has_selector?('div.c3')
+
+    take_screenshots
+  end
+
+  def test_ui_query_non_pivot
+    log_user('admin', 'admin')
+    visit '/projects/ecookbook/pivottables'
+   
+    take_screenshots 
+    click_on('Open issues grouped by list custom field')
+
+    assert_equal "Table", page.find('select.pvtRenderer').value
+    assert page.has_selector?('table.pvtTable')
+
+  end
 end

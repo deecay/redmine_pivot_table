@@ -1,4 +1,10 @@
-<h2><%= l(:header) %></h2>
+<div class="contextual">
+<% if !@query.new_record? && @query.editable_by?(User.current) %>
+  <%= delete_link query_path(@query) %>
+<% end %>
+</div>
+
+<h2><%= @query.new_record? ? l(:header) : @query.name %></h2>
 
 <% content_for :header_tags do %>
     <%= stylesheet_link_tag 'pivot', :plugin => 'redmine_pivot_table' %>
@@ -6,15 +12,16 @@
     <%= javascript_include_tag 'jquery-1.8.3.min.js', :plugin => 'redmine_pivot_table' %>
     <%= javascript_include_tag 'jquery-ui-1.9.2.custom.min.js', :plugin => 'redmine_pivot_table' %>
     <%= javascript_include_tag 'pivot.js', :plugin => 'redmine_pivot_table' %>
-    <%= javascript_include_tag 'c3_renderers.js', :plugin => 'redmine_pivot_table' %>
-    <% if ["ja", "fr"].include? @language.to_s %>
-      <%= javascript_include_tag @language_js, :plugin => 'redmine_pivot_table' %>
-    <% end %>
     <%= javascript_include_tag 'd3.min.js', :plugin => 'redmine_pivot_table' %>
     <%= javascript_include_tag 'c3.min.js', :plugin => 'redmine_pivot_table' %>
+    <%= javascript_include_tag 'c3_renderers.js', :plugin => 'redmine_pivot_table' %>
+    <%= javascript_include_tag @language_js, :plugin => 'redmine_pivot_table', :media => "all" if javascript_exists?(@language_js) %>
 <% end %>
 
 <style>
+
+ .pvtAxisContainer { overflow: auto; } /*for IE11 and jQuery draggable scroll offset workaround*/
+
  .pvtHorizList li { float: left; }
 
  table.pvtTable tr th, table.pvtTable tr th {
@@ -50,18 +57,7 @@ $(document).ready(function(){
            <% if @table == "activity" %>
              data = <%= raw parse_events(@events).to_json %>;
            <% else %>
-             <%  @query.available_columns[0] = QueryColumn.new(:id, :sortable => @query.available_columns[0].sortable, :default_order => @query.available_columns[0].default_order, :caption => "ID", :frozen => true) %>
-
-             data = 
-[<% @issues.each_with_index do |issue, i| -%><%
-
-%> { <% @query.available_columns.each_with_index do |column, j| -%><%
-
- %>"<%= column.caption -%>":"<% if (text = (column.name == :done_ratio) ? column.value_object(issue).to_s : column_content(column, issue)) -%><%=raw escape_javascript(text.split("\n")[0]) -%><% end -%>"<% if (j < @query.available_columns.size - 1) -%>,<% end -%><% end -%><%
-
-%> } <% if (i < @issues.size - 1) -%>,<% end -%><% end -%>
-
-];
+             data = <%= raw parse_issues(@issues).to_json %>;
            <% end %>
 
            var dateFormat = $.pivotUtilities.derivers.dateFormat;
@@ -116,12 +112,19 @@ $(document).ready(function(){
 
               renderers: renderers,
 
+              rendererOptions: {
+                c3: {
+                  size: { width: window.innerWidth / 1.4 * 0.8 }
+                }
+              },
+
               sorters: function(attr) {
                   if(attr === "<%= pv_caption(:status) -%>") {
                       return sortAs(["<%= raw @statuses.join('", "') %>"]);
                   }
               },
               onRefresh: update_url,
+
               <%= raw %|rendererName: "#{@rendererName}",| if @rendererName %>
               <%= raw %|aggregatorName: "#{@aggregatorName}",| if @aggregatorName %>
               <%= raw %|vals: ["#{@vals.join('","')}"],| if @vals %>
@@ -160,15 +163,56 @@ function clear_attr(){
 }
 function update_url(config){
     var config_copy = JSON.parse(JSON.stringify(config));
-    var link_url = "<%= request.original_url.split("?")[0] -%>" + "?" +
-                   "action=submit&" +
-                   "table=" + "<%= @table %>" + "&" +
-                   "rows=" + encodeURI(config_copy["rows"]) + "&" +
-                   "cols=" + encodeURI(config_copy["cols"]) + "&" +
-                   "rendererName=" + encodeURI(config_copy["rendererName"]) + "&" +
-                   "aggregatorName=" + encodeURI(config_copy["aggregatorName"]);
 
-    $("#url").val(link_url);
+    //var link_url = "table=" + "<%= @table %>" + "&" +
+    //               "rows=" + encodeURI(config_copy["rows"]) + "&" +
+    //               "cols=" + encodeURI(config_copy["cols"]) + "&" +
+    //               "rendererName=" + encodeURI(config_copy["rendererName"]) + "&" +
+    //               "aggregatorName=" + encodeURI(config_copy["aggregatorName"]) + "&" +
+    //               "attrdropdown=" + encodeURI(config_copy["vals"]);
+
+    $("#table").val("<%= @table %>");
+    $("#rows").val(config_copy["rows"]);
+    $("#cols").val(config_copy["cols"]);
+    $("#rendererName").val(config_copy["rendererName"]);
+    $("#aggregatorName").val(config_copy["aggregatorName"]);
+    $("#attrdropdown").val(config_copy["vals"]);
+
+    // Make string an actual link
+    $('.pvtRowLabel').each(function(){
+      var str = $(this).html();
+      var replaced_text = unescapeHTML(str).replace(/\s+/g, " ");
+      $(this).html(replaced_text);
+    });
+
+    $('.pvtColLabel').each(function(){
+      var str = $(this).html();
+      var replaced_text = unescapeHTML(str).replace(/\s+/g, " ");
+      $(this).html(replaced_text);
+    });
+
+    // Strip HTML tag from filters
+    $('.pvtCheckContainer p label span').each(function(){
+    //$('.pvtCheckContainer').children('p').children('label').children('span').each(function(){
+      var str = $(this).text();
+      $(this).text(str.replace(/(<([^>]+)>)/ig,""));
+    });
+}
+
+$(function(){
+  $("td.pvtVal").click( function(){
+    alert($("tr").index(this));
+  });
+});
+
+function unescapeHTML(str) {
+  var div = document.createElement("div");
+  div.innerHTML = str.replace(/</g,"&lt;")
+                     .replace(/>/g,"&gt;")
+                     .replace(/ /g, "&nbsp;")
+                     .replace(/\r/g, "&#13;")
+                     .replace(/\n/g, "&#10;");
+  return div.textContent || div.innerText;
 }
 </script>
 
@@ -197,7 +241,18 @@ function update_url(config){
                          :class => 'icon icon-checked' %>
     <%= link_to l(:button_clear), { :project_id => @project, :set_filter => 1 },
                 :class => 'icon icon-reload' %>
+    <% if @query.new_record? && User.current.allowed_to?(:save_queries, @project, :global => true) %>
+      <%= link_to_function l(:button_save),
+                             "$('#query_form').attr('action', './pivottables/new').submit()",
+                             :class => 'icon icon-save' %>
+    <% end %>
     </p>
+    <%= hidden_field_tag 'table' %>
+    <%= hidden_field_tag 'rows' %>
+    <%= hidden_field_tag 'cols' %>
+    <%= hidden_field_tag 'rendererName' %>
+    <%= hidden_field_tag 'aggregatorName' %>
+    <%= hidden_field_tag 'attrdropdown' %>
   <% end %>
 <% end %>
 
@@ -206,7 +261,6 @@ function update_url(config){
 
 <div id="output"></div>
 
-<a href="#" onclick="$(&#x27;#url&#x27;).toggle();; return false;" title="<%= l(:show_url_tips) %>" id="show-url">
- <%= l(:show_url) %>
-</a>
-<input type="text" id="url" readonly>
+<% content_for :sidebar do %>
+  <%= render :partial => 'issues/sidebar' %>
+<% end %>

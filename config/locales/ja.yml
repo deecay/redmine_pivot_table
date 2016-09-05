@@ -3,8 +3,6 @@ ja:
   project_module_pivottables: "ピボット集計"
   header: "ピボット集計"
   clear_all: "全ての項目をクリア"
-  show_url: "URLを表示"
-  show_url_tips: "現在の設定をお気に入りやWikiに使えるURLとして表示"
   label_issue_note_plural: "チケット編集"
   label_issue_closed_plural: "チケット終了"
 
