@@ -122,6 +122,9 @@ $(document).ready(function(){
                   if(attr === "<%= pv_caption(:status) -%>") {
                       return sortAs(["<%= raw @statuses.join('", "') %>"]);
                   }
+		  else if(attr === "<%= pv_caption(:tracker) -%>") {
+		      return sortAs(["<%= raw @trackers.join('", "') %>"]);
+		  }
               },
               onRefresh: update_url,
 

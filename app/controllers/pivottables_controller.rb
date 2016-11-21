@@ -19,6 +19,7 @@ class PivottablesController < ApplicationController
     @language = current_language
     @language_js = "pivot." + current_language.to_s + ".js"
     @statuses = IssueStatus.sorted.collect{|s| [s.name] }
+    @trackers = @project.trackers.sorted.to_a
 
     retrieve_query
     if (!@query.new_record? && @query.options[:pivot_config])
