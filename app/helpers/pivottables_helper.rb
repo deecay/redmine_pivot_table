@@ -61,6 +61,14 @@ module PivottablesHelper
           formatted_issue[c.caption] = c.value_object(i).to_s
         elsif c.name.to_s == "subject"
           formatted_issue[c.caption] = strip_tags(column_content(c, i))
+	elsif c.name.to_s.end_with?("_date") ||
+	      (c.is_a?(QueryCustomFieldColumn) && c.custom_field.field_format == "date")
+	  formatted_issue[c.caption] = column_content(c, i)
+	  if column_content(c, i).to_s != ""
+	    formatted_issue[c.caption+"(U)"] = Date.parse(column_content(c, i)).strftime("%Y-W%U")
+	  else
+	    formatted_issue[c.caption+"(U)"] = ""
+	  end
         else
           formatted_issue[c.caption] = column_content(c, i)
         end
