@@ -52,6 +52,7 @@ class PivottablesController < ApplicationController
       @events = @activity.events(Date.today - @days, Date.today + 1)
     else
       @query.project = @project
+      limit = Setting.plugin_redmine_pivot_table['pivottable_max'] || 1000
 
       # Exclude description
       @query.available_columns.delete_if { |querycolumn| querycolumn.name == :description }
@@ -62,7 +63,7 @@ class PivottablesController < ApplicationController
 
       @issues = @query.issues(:include => [:assigned_to, :tracker, :priority, :category, :fixed_version],
                               :offset => 0,
-                              :limit => 1000)
+                              :limit => limit)
     end
   end
 
