@@ -1,5 +1,6 @@
 require 'redmine'
 require 'query_column_patch'
+require 'projects_helper_patch'
 
 Rails.configuration.to_prepare do
   if Redmine::VERSION.to_s < "2.6.0"
