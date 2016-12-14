@@ -25,4 +25,5 @@ Redmine::Plugin.register :redmine_pivot_table do
 
   menu :project_menu, :pivottables, { :controller => 'pivottables', :action => 'index' }, :after => :activity, :param => :project_id
 
+  settings :default => {'pivottable_max' => 1000}, :partial => 'pivottables/setting'
 end
