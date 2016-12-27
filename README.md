@@ -9,13 +9,14 @@ It uses [PivotTable.js](http://nicolas.kruchten.com/pivottable/examples/) as a u
 
 With this plugin you can:
 * Analyze issues and activities by pivot tables and graphs
-* Drag and drop attributes to dynamiccaly change rows/columns configuration
+* Drag and drop attributes to dynamically change rows/columns configuration
+* Drilldown to issues by clicking on table cells
 * Save your configuration as queries
 
 ![Image](https://raw.github.com/wiki/deecay/redmine_pivot_table/images/table_simple.jpg)
 
 Requieres IE8 and above.
-PivotTable.js version included: May 20, 2016
+PivotTable.js version included: Dec 26, 2016
 
 
 ## Installation
@@ -60,8 +61,7 @@ For aggregator and renderer names, consult pivot.pt.js and send pull request to 
 
 ## Todo
 
-* Add "edit pivot query".
-* Some clean-ups of code and locale after recent changes.
+* Add proper "save/edit/delete pivot query".
 
 
 ## Keywords
