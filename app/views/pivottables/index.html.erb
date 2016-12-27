@@ -115,6 +115,11 @@ $(document).ready(function(){
               rendererOptions: {
                 c3: {
                   size: { width: window.innerWidth / 1.4 * 0.8 }
+                },
+                table: {
+                  <% if (@table != "activity") && (Redmine::VERSION.to_s >= "3.3.0") %>
+                  clickCallback: drill_through
+                  <% end %>
                 }
               },
 
@@ -155,6 +160,8 @@ function clear_attr(){
                          data,
                          {
                            renderers: renderers,
+                           rendererOptions: { c3: { size: { width: window.innerWidth / 1.4 * 0.8 } },
+                                              table: { clickCallback: drill_through } },
                            sorters: $.pivotUtilities.sorters,
                            onRefresh: update_url,
                            rows: [],
@@ -163,6 +170,13 @@ function clear_attr(){
                          },
                          true,
                          "<%= @language %>");
+}
+function drill_through(e, value, filters, pivotData){
+    var id_list = [];
+    pivotData.forEachMatchingRecord(filters,
+        function(record){ id_list.push(record.ID.replace(/(<([^>]+)>)/ig,"")); });
+    var issue_path = "<%= @project ? project_issues_path(@project) : issues_path -%>"
+    window.open(issue_path + "?set_filter=1&issue_id=" + id_list.join("%2C"));
 }
 function update_url(config){
     var config_copy = JSON.parse(JSON.stringify(config));
@@ -201,12 +215,6 @@ function update_url(config){
       $(this).text(str.replace(/(<([^>]+)>)/ig,""));
     });
 }
-
-$(function(){
-  $("td.pvtVal").click( function(){
-    alert($("tr").index(this));
-  });
-});
 
 function unescapeHTML(str) {
   var div = document.createElement("div");
