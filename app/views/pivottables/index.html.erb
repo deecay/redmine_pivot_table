@@ -176,7 +176,7 @@ function drill_through(e, value, filters, pivotData){
     pivotData.forEachMatchingRecord(filters,
         function(record){ id_list.push(record.ID.replace(/(<([^>]+)>)/ig,"")); });
     var issue_path = "<%= @project ? project_issues_path(@project) : issues_path -%>"
-    window.open(issue_path + "?set_filter=1&issue_id=" + id_list.join("%2C"));
+    window.open(issue_path + "?status_id=*&set_filter=1&issue_id=" + id_list.join("%2C"));
 }
 function update_url(config){
     var config_copy = JSON.parse(JSON.stringify(config));
