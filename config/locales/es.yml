@@ -1,0 +1,7 @@
+es:
+  label_pivottables: "Pivot"
+  project_module_pivottables: "Pivot"
+  header: "Tabla Pivot"
+  clear_all: "Borrar todos los atributos"
+  label_issue_note_plural: "Notas de la tarea"
+  label_issue_closed_plural: "Tarea cerrada"
