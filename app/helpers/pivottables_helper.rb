@@ -65,7 +65,7 @@ module PivottablesHelper
 	      (c.is_a?(QueryCustomFieldColumn) && c.custom_field.field_format == "date")
 	  formatted_issue[c.caption] = column_content(c, i)
 	  if column_content(c, i).to_s != ""
-	    formatted_issue[c.caption+"(U)"] = Date.parse(column_content(c, i)).strftime("%Y-W%U")
+	    formatted_issue[c.caption+"(U)"] = Date.strptime(column_content(c, i),I18n.t(:"date.formats.default", {:locale => I18n.locale })).strftime("%Y-W%U")
 	  else
 	    formatted_issue[c.caption+"(U)"] = ""
 	  end
