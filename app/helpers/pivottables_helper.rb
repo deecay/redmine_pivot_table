@@ -52,6 +52,13 @@ module PivottablesHelper
   def parse_issues(issues)
     result_list = Array.new
 
+    strpformat = ""
+    if Setting.date_format == ""
+      strpformat = lu(User.current, "date.formats.default", :default => "%Y-%m-%d")
+    else
+      strpformat = Setting.date_format
+    end
+
     issues.each{|i|
       formatted_issue = {}
       @query.available_columns.each{|c|
@@ -65,7 +72,7 @@ module PivottablesHelper
 	      (c.is_a?(QueryCustomFieldColumn) && c.custom_field.field_format == "date")
 	  formatted_issue[c.caption] = column_content(c, i)
 	  if column_content(c, i).to_s != ""
-	    formatted_issue[c.caption+"(U)"] = Date.parse(column_content(c, i)).strftime("%Y-W%U")
+	    formatted_issue[c.caption+"(U)"] = Date.strptime(column_content(c, i), strpformat).strftime("%Y-W%U")
 	  else
 	    formatted_issue[c.caption+"(U)"] = ""
 	  end
