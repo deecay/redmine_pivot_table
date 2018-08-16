@@ -1,0 +1,9 @@
+pl:
+  label_pivottables: "Tabela przestawna"
+  project_module_pivottables: "Tabela przestawna"
+  header: "Tabela przestawna"
+  clear_all: "Wyczyść wszystkie atrybuty"
+  label_issue_note_plural: "Komentarze do zgłoszenia"
+  label_issue_closed_plural: "Zamknięte zgłoszenia"
+  permission_view_pivottables: "Podgląd tabeli przestawnej"
+
