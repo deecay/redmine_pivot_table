@@ -76,6 +76,10 @@ module PivottablesHelper
 	  else
 	    formatted_issue[c.caption+"(U)"] = ""
 	  end
+        elsif c.name.to_s == "spent_hours"
+          formatted_issue[c.caption] = l_hours_short(i.spent_hours)
+        elsif c.name.to_s == "total_spent_hours"
+          formatted_issue[c.caption] = l_hours_short(i.total_spent_hours)
         else
           formatted_issue[c.caption] = column_content(c, i)
         end
