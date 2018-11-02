@@ -8,6 +8,12 @@ module PivottablesHelper
     end
   end
 
+  unless defined?(l_hours_short)
+    def l_hours_short(hours)
+      "%.2f" % hours.to_f
+    end
+  end
+
   def parse_events(events)
 
     result_list = Array.new
@@ -54,7 +60,7 @@ module PivottablesHelper
 
     strpformat = ""
     if Setting.date_format == ""
-      strpformat = lu(User.current, "date.formats.default", :default => "%Y-%m-%d")
+      strpformat = I18n.t(:"date.formats.default", {:locale => I18n.locale })
     else
       strpformat = Setting.date_format
     end
