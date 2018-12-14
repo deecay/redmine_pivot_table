@@ -71,11 +71,9 @@ Pivot Table, Graphs, Analysis, Redmine, Plugin
 
 ## Support
 
-Support will only be given to the following versions or above:
+Support will only be given to the following versions:
 
-* Redmine version                2.6.0.stable
-* Ruby version                   ruby 2.1.5p273
-* Rails version                  3.2.19
+* Redmine version                2.6.0.stable - 3.4.7.stable
 
 
 ## License
