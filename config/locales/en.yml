@@ -4,5 +4,5 @@ en:
   header: "Pivot Table"
   clear_all: "Clear all attributes"
   label_issue_note_plural: "Issue notes"
+  label_issue_edit_plural: "Issue status updated"
   label_issue_closed_plural: "Issue closed"
-

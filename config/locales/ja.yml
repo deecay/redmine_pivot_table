@@ -4,5 +4,5 @@ ja:
   header: "ピボット集計"
   clear_all: "全ての項目をクリア"
   label_issue_note_plural: "チケット編集"
+  label_issue_edit_plural: "ステータスの更新"
   label_issue_closed_plural: "チケット終了"
-
