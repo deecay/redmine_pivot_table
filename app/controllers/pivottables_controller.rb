@@ -1,6 +1,10 @@
 class PivottablesController < ApplicationController
   unloadable
-  before_filter :find_optional_project, :authorize, :only => [:index, :new, :save]
+  if respond_to? :before_action
+    before_action :find_optional_project, :authorize, :only => [:index, :new, :save]
+  else
+    before_filter :find_optional_project, :authorize, :only => [:index, :new, :save]
+  end
 
   helper :issues
   helper :queries
