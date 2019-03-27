@@ -68,7 +68,7 @@ class PivottablesController < ApplicationController
 
       @issues = @query.issues(:include => [:assigned_to, :tracker, :priority, :category, :fixed_version],
                               :offset => 0,
-                              :order => "(SELECT NULL)",
+                              :order => "issues.id",
                               :limit => limit)
     end
   end
