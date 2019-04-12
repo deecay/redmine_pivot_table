@@ -42,7 +42,9 @@
         filterResults: "Filtrer les valeurs",
         totals: "Totaux",
         vs: "sur",
-        by: "par"
+        by: "par",
+        apply: "Appliquer",
+        cancel: "Annuler"
       },
       aggregators: {
         "Nombre": tpl.count(frFmtInt),
@@ -53,6 +55,8 @@
         "Moyenne": tpl.average(frFmt),
         "Minimum": tpl.min(frFmt),
         "Maximum": tpl.max(frFmt),
+        "Premier": tpl.first(frFmt),
+        "Dernier": tpl.last(frFmt),
         "Ratio de sommes": tpl.sumOverSum(frFmt),
         "Borne supérieure 80%": tpl.sumOverSumBound80(true, frFmt),
         "Borne inférieure 80%": tpl.sumOverSumBound80(false, frFmt),
