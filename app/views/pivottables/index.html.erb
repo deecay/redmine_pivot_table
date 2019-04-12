@@ -212,6 +212,12 @@ function update_url(config){
       var str = $(this).text();
       $(this).text(str.replace(/(<([^>]+)>)/ig,""));
     });
+
+    // Strip HTML tag from values
+    $('.pvtVal,.pvtTotal,.pvtGrandTotal').each(function(){
+      var str = $(this).text();
+      $(this).text(str.replace(/(<([^>]+)>)/ig,""));
+    });
 }
 
 function unescapeHTML(str) {
