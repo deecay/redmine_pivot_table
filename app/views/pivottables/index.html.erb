@@ -206,15 +206,8 @@ function update_url(config){
       $(this).html(replaced_text);
     });
 
-    // Strip HTML tag from filters
-    $('.pvtCheckContainer p label span').each(function(){
-    //$('.pvtCheckContainer').children('p').children('label').children('span').each(function(){
-      var str = $(this).text();
-      $(this).text(str.replace(/(<([^>]+)>)/ig,""));
-    });
-
-    // Strip HTML tag from values
-    $('.pvtVal,.pvtTotal,.pvtGrandTotal').each(function(){
+    // Strip HTML tag from filters and values
+    $('.pvtVal,.pvtTotal,.pvtGrandTotal,.pvtCheckContainer p label span').each(function(){
       var str = $(this).text();
       $(this).text(str.replace(/(<([^>]+)>)/ig,""));
     });
