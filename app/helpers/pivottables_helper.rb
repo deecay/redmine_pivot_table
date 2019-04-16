@@ -1,4 +1,7 @@
 module PivottablesHelper
+
+  include Redmine::I18n
+
   def pv_caption(colname)
     if @query
       col = @query.available_columns.find(){ |x| x.name == colname }
@@ -10,7 +13,12 @@ module PivottablesHelper
 
   unless defined?(l_hours_short)
     def l_hours_short(hours)
-      "%.2f" % hours.to_f
+      unless defined?(format_hours)
+        def format_hours(hours)
+          "%.2f" % hours.to_f
+        end
+      end
+      format_hours(hours.to_f)
     end
   end
 
@@ -84,8 +92,12 @@ module PivottablesHelper
 	  end
         elsif c.name.to_s == "spent_hours"
           formatted_issue[c.caption] = l_hours_short(i.spent_hours)
+        elsif c.name.to_s == "total_estimated_hours"
+          formatted_issue[c.caption] = l_hours_short(i.total_estimated_hours)
         elsif c.name.to_s == "total_spent_hours"
           formatted_issue[c.caption] = l_hours_short(i.total_spent_hours)
+        elsif c.name.to_s == "estimated_hours"
+          formatted_issue[c.caption] = l_hours_short(i.estimated_hours)
         else
           formatted_issue[c.caption] = column_content(c, i)
         end

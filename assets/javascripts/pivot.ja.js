@@ -46,7 +46,9 @@
         filterResults: "フィルタ",
         totals: "合計",
         vs: "対",
-        by: "by"
+        by: "by",
+        apply: "適用",
+        cancel: "キャンセル"
       },
       aggregators: {
         "カウント": tpl.count(jaFmtInt),

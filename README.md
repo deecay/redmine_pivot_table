@@ -16,7 +16,7 @@ With this plugin you can:
 ![Image](https://raw.github.com/wiki/deecay/redmine_pivot_table/images/table_simple.jpg)
 
 Requieres IE8 and above.
-PivotTable.js version included: Dec 26, 2016
+PivotTable.js version included: Nov 5, 2018
 
 
 ## Installation
