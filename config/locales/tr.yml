@@ -4,3 +4,5 @@ tr:
   project_module_pivottables: "Pivot"
   header: "Pivot Tablo"
   clear_all: "Tercihleri Sıfırla"
+  label_overall_activity: Tum faaliyetler
+  label_overall_spent_time: Toplam harcanan zaman

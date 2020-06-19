@@ -6,4 +6,5 @@ pl:
   label_issue_note_plural: "Komentarze do zgłoszenia"
   label_issue_closed_plural: "Zamknięte zgłoszenia"
   permission_view_pivottables: "Podgląd tabeli przestawnej"
-
+  label_overall_activity: "Ogólna aktywność"
+  label_overall_spent_time: "Przepracowany czas"

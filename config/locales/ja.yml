@@ -6,3 +6,5 @@ ja:
   label_issue_note_plural: "チケット編集"
   label_issue_edit_plural: "ステータスの更新"
   label_issue_closed_plural: "チケット終了"
+  label_overall_activity: すべての活動
+  label_overall_spent_time: すべての作業時間

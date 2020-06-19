@@ -5,3 +5,5 @@ es:
   clear_all: "Borrar todos los atributos"
   label_issue_note_plural: "Notas de la tarea"
   label_issue_closed_plural: "Tarea cerrada"
+  label_overall_activity: Actividad global
+  label_overall_spent_time: Tiempo total dedicado
