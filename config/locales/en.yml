@@ -6,3 +6,5 @@ en:
   label_issue_note_plural: "Issue notes"
   label_issue_edit_plural: "Issue status updated"
   label_issue_closed_plural: "Issue closed"
+  label_overall_activity: Overall activity
+  label_overall_spent_time: Overall spent time

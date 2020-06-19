@@ -5,3 +5,5 @@ pt-br:
   clear_all: "Limpar todos os filtros"
   label_issue_note_plural: "Notas da tarefa"
   label_issue_closed_plural: "Tarefa fechada"
+  label_overall_activity: Atividades gerais
+  label_overall_spent_time: Tempo gasto geral

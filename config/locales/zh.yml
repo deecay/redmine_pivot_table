@@ -6,4 +6,5 @@ zh:
   clear_all: "清除所有属性"
   label_issue_note_plural: "问题批注"
   label_issue_closed_plural: "问题已关闭"
-
+  label_overall_activity: "活动概览"
+  label_overall_spent_time: "总体耗时"
