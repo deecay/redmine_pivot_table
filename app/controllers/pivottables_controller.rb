@@ -1,9 +1,10 @@
 class PivottablesController < ApplicationController
   unloadable
-  if respond_to? :before_action
-    before_action :find_optional_project, :authorize, :only => [:index, :new, :save]
+  if respond_to?(:before_action)
+    before_action :find_project_by_project_id, :only => [:index, :new, :save]
+    before_action :authorize, :only => [:index]
   else
-    before_filter :find_optional_project, :authorize, :only => [:index, :new, :save]
+    before_filter :find_project_by_project_id, :authorize, :only => [:index, :new, :save]
   end
 
   helper :issues
@@ -19,7 +20,6 @@ class PivottablesController < ApplicationController
   end
 
   def index
-    @project = Project.find(params[:project_id]) if params[:project_id]
     @language = current_language
     @language_js = "pivot." + current_language.to_s + ".js"
     @statuses = IssueStatus.sorted.collect{|s| [s.name] }
@@ -73,15 +73,7 @@ class PivottablesController < ApplicationController
     end
   end
 
-  def find_optional_project
-    # @project variable must be set before calling the authorize filter
-    return true unless params[:id]
-    @project = Project.find(params[:project_id])
-    #authorize
-  end
-
   def new
-    @project = Project.find(params[:project_id]) if params[:project_id]
     retrieve_query
     @query.project = @project
     @query.name = ""
@@ -94,7 +86,6 @@ class PivottablesController < ApplicationController
   end
 
   def save
-    @project = Project.find(params[:project_id]) if params[:project_id]
     retrieve_query
 
     @query.user = User.current
@@ -110,7 +101,6 @@ class PivottablesController < ApplicationController
       @query.visibility = IssueQuery::VISIBILITY_PRIVATE
     end
 
- 
     config = params[:query][:options][:pivot_config]
     @query.options[:pivot_config] = { :table => config[:table],
                :rows => config[:rows],
@@ -128,12 +118,6 @@ class PivottablesController < ApplicationController
       end
     else
       render :action => 'new', :layout => !request.xhr?
-    end
-  end
-
-  def authorize
-    unless User.current.allowed_to?(:view_pivottables, nil, :global => true)
-      redirect_to signin_path
     end
   end
 end
